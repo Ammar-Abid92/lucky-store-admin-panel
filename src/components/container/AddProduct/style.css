@@ -1,0 +1,437 @@
+.inputfile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.inputfile + label {
+  max-width: 80%;
+  font-size: 1rem;
+  font-weight: 400;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  display: inline-block;
+  overflow: hidden;
+  padding: 7px 18px;
+  border-radius: 5px;
+  margin-top: 32px;
+  margin-bottom: 11px;
+}
+
+.no-js .inputfile + label {
+  display: none;
+}
+
+.inputfile:focus + label,
+.inputfile.has-focus + label {
+  outline: 1px dotted #000;
+  outline: -webkit-focus-ring-color auto 5px;
+}
+
+.inputfile + label * {
+  /* pointer-events: none; */
+  /* in case of FastClick lib use */
+}
+
+.inputfile + label svg {
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+  fill: currentColor;
+  margin-top: -0.25em;
+  /* 4px */
+  margin-right: 0.25em;
+  /* 4px */
+}
+
+/* style 1 */
+
+.inputfile-1 + label {
+  color: #f1e5e6;
+  background-color: #d3394c;
+}
+
+.inputfile-1:focus + label,
+.inputfile-1.has-focus + label,
+.inputfile-1 + label:hover {
+  background-color: #722040;
+}
+
+/* style 2 */
+
+.inputfile-2 + label {
+  color: var(--mainColor);
+  border: 1px solid var(--mainColor);
+}
+
+.inputfile-2:focus + label,
+.inputfile-2.has-focus + label,
+.inputfile-2 + label:hover {
+  color: #4e0d47;
+}
+.multiImageUploadBox {
+  display: flex;
+  flex-direction: row;
+  padding: 0 35px;
+  margin: 0 0 50px;
+}
+.multiImageUploadBox img {
+  margin: 30px 28px 10px 0;
+  border: 1px solid #ddd;
+  padding: 2px 2px;
+  border-radius: 5px;
+}
+.inuptStepOne.inputfile + label {
+  text-align: center;
+  float: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-width: 120px;
+  height: 105px;
+}
+.upldIconimg {
+  padding: 5px 0;
+}
+.upldIconimg .uploadImageIcon {
+  width: 29px;
+  height: 29px;
+  margin: 0;
+}
+.login_page_form_section.editBusinessDetailForm .form-group.selctCategoryMain {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.addNewCategoryProduct {
+  color: var(--mainColor);
+  position: relative;
+  top: 10px;
+}
+.addNewCategoryProduct span {
+  color: var(--skyBlue);
+}
+.addNewCategoryProduct span:hover {
+  cursor: pointer;
+}
+.form-group.textAreaField {
+  float: left !important;
+  width: 100% !important;
+  margin: 15px 0 10px;
+}
+.textAreaField textarea {
+  width: 47%;
+  border: 1px solid #ddd;
+  box-shadow: 0 1px 0px rgba(0, 0, 0, 0.12);
+}
+.unitandCategoryMain {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+.unitandCategoryInner {
+  display: flex;
+  flex-direction: row;
+}
+.unitandCategoryMain .dropdown-item {
+  font-size: 14px;
+  color: var(--mediumGray);
+}
+.unitandCategoryMain .dropdown-item:hover,
+.unitandCategoryMain .dropdown-item:focus {
+  color: var(--white) !important;
+  background: var(--mainColor) !important;
+}
+.selectUnitDrop {
+  position: relative;
+  width: 47%;
+}
+.selectUnitDrop .dropdown-item {
+  font-size: 14px;
+  color: var(--mediumGray);
+}
+.selectUnitDrop .dropdown-item:hover,
+.selectUnitDrop .dropdown-item:focus {
+  color: var(--white) !important;
+  background: var(--mainColor) !important;
+}
+.selectUnitDrop .dropdown .btn-success {
+  background: transparent;
+  border-color: var(--mainColor);
+  color: var(--mainColor);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  position: relative;
+  padding: 7px 0px 15px;
+  top: -11px;
+  font-size: 16px;
+  box-shadow: 0 0px 0px rgb(0 0 0 / 10%);
+  border-bottom: 1px solid var(--lightGray) !important;
+  border-radius: 0;
+  border: none;
+}
+.selectUnitDrop .btn-success:not(:disabled):not(.disabled).active,
+.selectUnitDrop .btn-success:not(:disabled):not(.disabled):active,
+.selectUnitDrop .show > .btn-success.dropdown-toggle {
+  background: transparent;
+  border-color: var(--mainColor) !important;
+  border-bottom: 1px solid var(--mainColor) !important;
+  border: none;
+  color: var(--mainColor);
+}
+.selectUnitDrop .dropdown button.dropdown-toggle::after {
+  content: "";
+  display: inline-block;
+  background: url(../../../assets/images/DropDown.svg);
+  height: 18px;
+  width: 18px;
+  position: relative;
+  background-repeat: no-repeat;
+  background-size: cover;
+  top: 0px;
+  border: none;
+}
+.selectUnitDrop .dropdown-menu .dropdown-item.active,
+.selectUnitDrop .dropdown-menu .dropdown-item:active {
+  background: transparent;
+  color: var(--mediumGray);
+}
+.selectUnitDrop .dropdown-menu {
+  width: 100%;
+}
+.selctCategoryMain {
+  position: relative;
+  width: 47%;
+}
+.selctCategoryMain .dropdown-item {
+  font-size: 14px;
+  color: var(--mediumGray);
+}
+.selctCategoryMain .dropdown-item:hover,
+.selctCategoryMain .dropdown-item:focus {
+  color: var(--white) !important;
+  background: var(--mainColor) !important;
+}
+.selctCategoryMain .dropdown .btn-success {
+  background: transparent;
+  border-color: var(--mainColor);
+  color: var(--mainColor);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  position: relative;
+  padding: 7px 0px 15px;
+  top: -11px;
+  font-size: 16px;
+  box-shadow: 0 0px 0px rgb(0 0 0 / 10%);
+  border-bottom: 1px solid var(--lightGray) !important;
+  border-radius: 0;
+  border: none;
+}
+.selctCategoryMain .btn-success:not(:disabled):not(.disabled).active,
+.selctCategoryMain .btn-success:not(:disabled):not(.disabled):active,
+.selctCategoryMain .show > .btn-success.dropdown-toggle {
+  background: transparent;
+  border-color: var(--mainColor) !important;
+  border-bottom: 1px solid var(--mainColor) !important;
+  border: none;
+  color: var(--mainColor);
+}
+.selctCategoryMain .dropdown button.dropdown-toggle::after {
+  content: "";
+  display: inline-block;
+  background: url(../../../assets/images/DropDown.svg);
+  height: 18px;
+  width: 18px;
+  position: relative;
+  background-repeat: no-repeat;
+  background-size: cover;
+  top: 0px;
+  border: none;
+}
+.selctCategoryMain .dropdown-menu .dropdown-item.active,
+.selctCategoryMain .dropdown-menu .dropdown-item:active {
+  background: transparent;
+  color: var(--mediumGray);
+}
+.selctCategoryMain .dropdown-menu {
+  width: 100%;
+  height: 250px;
+  overflow-x: auto;
+  scrollbar-color: var(--mainColor) var(--extraLightGray);
+}
+.selctCategoryMain .dropdown-menu.show::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: var(--extraLightGray);
+}
+.selctCategoryMain .dropdown-menu.show::-webkit-scrollbar {
+  width: 6px;
+  background-color: #f5f5f5;
+}
+.selctCategoryMain .dropdown-menu.show::-webkit-scrollbar-thumb {
+  background-color: var(--mainColor);
+}
+
+.form-group.addItemInupt {
+  width: 47%;
+  position: relative;
+}
+.addItemInupt label {
+  color: var(--mainColor);
+  margin-bottom: 0;
+  font-size: 15px;
+  /* position: absolute;
+    top: -30px; */
+  position: relative;
+  top: -67px;
+  transition: color 0.4s ease;
+}
+.addItemInupt input:focus + .control-label {
+  color: #ddd;
+}
+.addItemInupt input {
+  border: none;
+  border-color: #ddd;
+  transition: all 0.4s ease;
+  border-radius: 0;
+  padding: 5px 0 20px;
+  color: var(--mainColor);
+  font-size: 1.1rem;
+  box-shadow: 0 1px 0px rgba(0, 0, 0, 0.12);
+  position: relative;
+}
+.addItemInupt input.form-control::placeholder {
+  color: #ddd;
+  /* opacity: 0.5; */
+}
+.addItemInupt input:hover {
+}
+.addItemInupt input:focus {
+  border-color: var(--mainColor);
+  color: var(--mainColor);
+  outline: 0;
+  text-shadow: none;
+  box-shadow: 0 1px 0px rgba(0, 0, 0, 0.12) !important;
+}
+.inpurErrors {
+  color: var(--red);
+  font-size: 13px;
+  position: absolute;
+  top: 41px;
+  left: 0px;
+}
+.sizeandColorBox {
+  width: 47%;
+  min-height: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: -10px;
+  padding-left: 32px;
+}
+.sizeandColorBoxInner {
+  cursor: pointer;
+}
+.sizeandColorBoxInner span {
+  margin-right: 5px;
+  font-size: 16px;
+  color: var(--skyBlue);
+}
+.addItemMainContainer {
+  overflow-y: auto;
+  scrollbar-color: var(--mainColor) #f5f5f5;
+}
+.addItemMainContainer::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: var(--extraLightGray);
+}
+.addItemMainContainer::-webkit-scrollbar {
+  width: 6px;
+  background-color: #f5f5f5;
+}
+.addItemMainContainer::-webkit-scrollbar-thumb {
+  background-color: var(--mainColor);
+}
+.addItemINputRowCont {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 35px;
+  margin: 10px 0;
+}
+.addItemINputRowCont .textAreaField textarea {
+  border-bottom: 2px solid var(--extraLightGray) !important;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  font-size: 1.1rem;
+  color: var(--mainColor);
+  height: 50px !important;
+  padding: 5px 0;
+  width: 100%;
+}
+.addItemINputRowCont .textAreaField textarea::placeholder {
+  color: var(--lightGray);
+}
+.addItemINputRowCont .textAreaField textarea:focus {
+  border-bottom: 2px solid var(--mainColor) !important;
+}
+.buttonContEditDtl {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.marginLeft5 {
+  margin-left: 2px;
+}
+.itemCheckMark {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: 50%;
+  padding: 0 10px;
+  margin: 15px 27px 15px;
+}
+.itemCheckMark .stock_managmentCheckbox,
+.itemCheckMark span {
+  cursor: pointer;
+}
+.itemCheckMark span:nth-child(2) {
+  margin-left: 10px;
+  color: var(--darkGray);
+}
+.login_btn_next.addItemDisable {
+  background: var(--white);
+  border: 1px solid var(--lightGray);
+  color: var(--lightGray);
+}
+.login_btn_next.addItemDisable:hover,
+.login_btn_next.addItemDisable:focus {
+  background: var(--white) !important;
+  border: 1px solid var(--lightGray) !important;
+}
+.firstRowInput {
+  margin-bottom: 50px;
+}
+
+@media screen and (max-width: 50em) {
+  .inputfile-6 + label strong {
+    display: block;
+  }
+}

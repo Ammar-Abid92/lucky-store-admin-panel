@@ -1,0 +1,115 @@
+.addvariantMain{
+    overflow-y: auto;
+    padding-top: 45px;
+    scrollbar-color: var(--mainColor) #f5f5f5;
+}
+.addvariantMain::-webkit-scrollbar-track{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: var(--extraLightGray);
+}
+.addvariantMain::-webkit-scrollbar{
+	width: 6px;
+	background-color: #F5F5F5;
+}
+.addvariantMain::-webkit-scrollbar-thumb{
+	background-color:var(--mainColor);
+}
+.sizesList{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 14px 35px;
+    height: 150px;
+    margin-bottom: 40px;
+    background: var(--extraLightGray);
+    overflow-y: auto;
+}
+.sizesListInner{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 6px 0;
+}
+.sizesListInner span{
+    font-size: 0.9rem;
+    color: var(--mediumGray);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.sizesListInner span:nth-child(2){
+    cursor: pointer;
+}
+.addItemINputRowCont.addSizeVariant{
+    justify-content: flex-start;
+    margin-bottom: -5px;
+}
+.variantPlusIcon{
+    border-radius: 20px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+    position: relative;
+    top: -5px;
+    cursor: pointer;
+}
+.addColorModal .modal-dialog {
+    right: 4.5% !important;
+    position: absolute;
+}
+.colorBox{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.colorBox span{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 36px;
+    height: 36px;
+    background: rgba(0,0,0,0.5);
+    border-radius: 50%;
+}
+.colorBox span svg{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.addColorModal .modalTelcosMain {
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+.modalSaveButton{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+.modalSaveButton .login_btn_next{
+    min-width: 100px;
+}
+.addColorIcon{
+
+}
+.sizesListInnercolorBox{
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    border-radius: 20px;
+    margin-right: 10px;
+
+}

@@ -1,0 +1,138 @@
+.signupPage .login_page_top_content {
+  margin-bottom: 10px;
+  height: 100px;
+}
+
+.login_page_form_section.addBusinessDetailForm {
+  position: relative;
+  top: 26px;
+}
+.login_page_form_section.addBusinessDetailForm .form-group {
+  margin-bottom: 40px;
+}
+.checkmarkIcon {
+  /* background: url('/icons/Resend_white.svg'); */
+  background: url("../../../assets/icons/Checkmark.svg");
+  background-size: cover;
+  width: 20px;
+  height: 21px;
+  display: block;
+  margin-right: 10px;
+  top: 0px;
+  position: relative;
+}
+.login_page_form_section .form-group.formLink_box input {
+  padding: 5px 0 20px 0px;
+  z-index: 9;
+  position: relative;
+  background: transparent;
+}
+
+.formLink_box {
+}
+.buytoko_linktext {
+  position: absolute;
+  top: 0px;
+  font-size: 1.1rem;
+  color: var(--darkGray);
+}
+.store_link_tagline {
+  font-size: 0.84rem;
+  color: var(--mediumGray);
+  position: relative;
+  top: -19px;
+  margin-bottom: 5px;
+}
+.checkmarkWhite svg {
+  fill: var(--white);
+  position: relative;
+  left: -6px;
+  top: -1px;
+}
+.checkmarkGray svg {
+  fill: var(--lightGray);
+  position: relative;
+  left: -6px;
+  top: -1px;
+}
+.addbusinesscircle .loaderCircle {
+  position: relative;
+  left: -6px;
+}
+
+.signupMiddlesection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 48vh;
+  /* border: 1px solid; */
+  width: 100%;
+}
+.inputCont {
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+}
+.inputCont input {
+  border: none;
+  border-bottom: 1px solid;
+  border-radius: 0 !important;
+  border-color: var(--extraLightGray);
+  transition: all 0.4s ease;
+  border-radius: 0;
+  padding: 5px 0 20px;
+  color: #3b0c36;
+  font-size: 1.1rem;
+  box-shadow: 0 1px 0px rgba(0, 0, 0, 0.12);
+}
+.inputCont input::placeholder {
+  color: var(--lightGray);
+  /* opacity: 0.5; */
+}
+.inputCont input:hover {
+}
+.inputCont input:focus {
+  border-color: var(--mainColor);
+  color: var(--mainColor);
+  outline: 0;
+  text-shadow: none;
+  box-shadow: 0 1px 0px rgba(0, 0, 0, 0.12) !important;
+}
+.formInputmBox.profileDetailInput {
+  margin-top: 40px;
+  margin-bottom: 20px;
+  padding: 0;
+}
+.profileDetailInput .inputBoxRightSide.businessCategoryLabel select {
+  width: 100%;
+  color: var(--mainColor);
+  padding-bottom: 18px;
+}
+.businessCategoryLabel.businessCategory {
+  width: 100%;
+}
+.linkTickMark {
+  position: absolute;
+  top: 5px;
+  right: -1px;
+  cursor: default;
+}
+.addbusinessCatError {
+  position: relative;
+  top: 20px;
+}
+.otherbusinessCatError {
+  position: relative;
+  top: 0px;
+}
+.addBusinessDetailForm .error_paragraph {
+  margin-bottom: 0;
+}
+.addBusinessDetailForm .clearCategoryButton {
+  bottom: 42px;
+  right: -7px;
+}
+/* .addBusinessDetailForm .form-group input {
+  width: 90%;
+} */

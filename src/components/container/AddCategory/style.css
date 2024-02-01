@@ -1,0 +1,76 @@
+.categoryImage .uploadFIleCont {
+    width: 120px;
+    justify-content: flex-start;
+    height: 105px;
+    margin: 32px 0 0;
+    /* top: -60px; */
+    
+}
+.categoryImage .uploadFIleCont button {
+    display: flex;
+    flex-direction: column;
+    min-height: 105px;
+    width: 120px;
+    padding: 0 0px;
+}
+.categoryImage .uploadImageIcon{
+    margin-right: 0;
+    width: 29px;
+    height: 29px;
+    /* padding: 5px 0; */
+    margin: 5px 0;
+}
+.categoryImage {
+    display: flex;
+    flex-direction: row;
+    padding: 0 35px;
+    margin: 0 0 61px;
+}
+.editCategoryinner img {
+    margin: 31px 0px 0px 0;
+    border: 1px solid #ddd;
+    padding: 5px 2px;
+    border-radius: 5px;
+    width: 120px;
+    height: 106px;
+}
+.categoryFileInput + label {
+    color: var(--mainColor);
+    border: 1px solid var(--mainColor);
+}
+
+.categoryFileInput:focus + label,
+.categoryFileInput.has-focus + label,
+.categoryFileInput + label:hover {
+    color: #4e0d47;
+}
+.categoryImageLoader{
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    top: 27px;
+    margin-bottom: 28px;
+}
+.editCategoryinner{
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    top: 0px;
+}
+.categorycloseIconimage{
+    position: relative;
+    background-Color: red;
+    border-width: 0; 
+    border-radius: 30px;
+    height: 25px; 
+    width: 25px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    left: -13px;
+    top: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}

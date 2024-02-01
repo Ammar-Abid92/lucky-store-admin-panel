@@ -1,0 +1,422 @@
+.itemsMainContiner {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background: var(--white);
+  /* padding: 30px 15px; */
+  border-radius: 15px;
+  box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+.createitemsMainBox {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 33.3%;
+  text-align: center;
+  padding: 15px 15px;
+}
+.createitemsCenterBox {
+  /* border-right: 1px solid var(--lightGray);
+    border-left: 1px solid var(--lightGray); */
+}
+.createitemsMainBoxLeft.active {
+  background: var(--extraLightGray);
+  border-radius: 15px 0 0 15px;
+}
+.createitemsMainBoxRight.active {
+  background: var(--extraLightGray);
+  border-radius: 0px 15px 15px 0px;
+}
+.createitemsCenterBox.active {
+  background: var(--extraLightGray);
+}
+.createitemsBorderLeft {
+  border-left: 1px solid var(--lightGray);
+  display: block;
+  width: 1px;
+  height: 100px;
+}
+.createitemsBorderRight {
+  border-right: 1px solid var(--lightGray);
+  display: block;
+  width: 1px;
+  height: 100px;
+}
+.itemIconBox {
+  margin: 0;
+}
+.itemHeadingBox {
+  margin: 0;
+}
+.itemParaBox {
+  margin: 0;
+  min-height: 45px;
+}
+.customMargin {
+  margin-top: 15px;
+}
+.uploadCsvMain {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #efefef;
+  padding: 10px 0 0px;
+  margin-bottom: 0px;
+  box-shadow: 0 0.5px 0px rgba(0, 0, 0, 0.1);
+}
+.uploadCsvMain span {
+  color: var(--mainColor);
+  font-size: 1.1rem;
+}
+.uploadCsvMain button {
+  background: #fff;
+  border: none;
+  box-shadow: none;
+  margin: 20px 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  color: var(--mainColor);
+  padding: 0;
+}
+.uploadCsvMain button span:nth-child(2) {
+  text-decoration: underline !important;
+  color: #00b3ed;
+  font-size: 1.1rem;
+  font-weight: 400;
+}
+.csvIcon {
+  background: url("../../../assets/icons/CSV.svg");
+  background-size: cover;
+  width: 20px;
+  height: 20px;
+  display: block;
+  margin-right: 5px;
+  top: 2px;
+  position: relative;
+}
+.productItemMainCont {
+  /* width: 100%;
+    min-height: 150px;
+    height: calc(100vh - 480px);
+    overflow: auto;
+    scrollbar-width: thin; */
+  /* overflow-x: hidden; */
+}
+.productItemMain {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  /* border-bottom: 1px solid #eee; */
+  padding: 6px 0;
+  /* box-shadow: 0 0.5px 0px rgba(0, 0, 0, 0.10); */
+}
+.productItemMain .form-group label {
+  color: var(--mainColor);
+  margin-bottom: 0;
+  font-size: 15px;
+  /* position: absolute;
+    top: -30px; */
+  position: relative;
+  top: -67px;
+  transition: color 0.4s ease;
+}
+.productItemMain .form-group {
+  margin: 10px 20px 15px 0;
+  width: 29%;
+}
+.productItemMain .form-group:nth-child(3) {
+  margin-right: 5px;
+}
+.productItemMain .form-group input:focus + .control-label {
+  color: #ddd;
+}
+.productItemMain .form-group input {
+  border: none;
+  border-bottom: 1px solid;
+  border-color: #ddd;
+  transition: all 0.4s ease;
+  border-radius: 0;
+  padding: 5px 0 10px;
+  color: var(--mainColor);
+  font-size: 0.95rem;
+  box-shadow: 0 0.5px 0px rgba(221, 146, 146, 0.1);
+}
+.productItemMain .form-group input.form-control::placeholder {
+  color: #ddd;
+  /* opacity: 0.5; */
+}
+.productItemMain .form-group input:hover {
+}
+.productItemMain .form-group input:focus {
+  border-color: var(--mainColor);
+  color: var(--mainColor);
+  outline: 0;
+  text-shadow: none;
+  box-shadow: 0 1px 0px rgba(0, 0, 0, 0.12) !important;
+}
+.productItemRowDelete {
+  /* position: absolute;
+  right: -35px; */
+}
+.prdDltBtn {
+  background: #fff;
+  border: none;
+  box-shadow: none;
+  margin: 20px 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  color: var(--mainColor);
+  padding: 0;
+  position: relative;
+  top: -25px;
+}
+.dltIcon {
+  background: url("../../../assets/icons/Delete.svg");
+  background-size: cover;
+  width: 20px;
+  height: 20px;
+  display: block;
+  margin-right: 5px;
+  top: 2px;
+  position: relative;
+}
+.addProductBtn {
+  background: #fff;
+  border: none;
+  box-shadow: none;
+  margin: 10px 0px 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  color: #00b3f1;
+  padding: 0;
+}
+.addProductBtn span:nth-child(2) {
+  color: #00b3ed;
+  font-size: 1rem;
+  font-weight: 400;
+}
+.addproductIcon {
+  background: url("../../../assets/icons/Plus.svg");
+  background-size: cover;
+  width: 20px;
+  height: 20px;
+  display: block;
+  margin-right: 5px;
+  top: 0px;
+  position: relative;
+}
+.login_btn_next.saveandCont {
+  float: right;
+  position: relative;
+  top: 25px;
+  margin-bottom: 45px;
+}
+.productItemImageMain {
+  width: 19%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  position: relative;
+  top: -22px;
+}
+.uploadFIleCont {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.uploadFIleCont input[type="file"] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.uploadFIleCont input[type="file"]:hover {
+  cursor: pointer;
+}
+.uploadFIleCont input {
+  cursor: pointer;
+}
+.uploadFIleCont button {
+  border: 1px solid var(--mainColor);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: none;
+  margin: 10px 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  color: var(--mainColor);
+  padding: 7px 18px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.uploadFIleCont button:hover,
+.uploadFIleCont:hover,
+.uploadFIleCont input[type="file"]:hover {
+  cursor: pointer;
+}
+.uploadImageIcon {
+  background: url("../../../assets/icons/Add Photo.svg");
+  background-size: cover;
+  width: 22px;
+  height: 22px;
+  display: block;
+  margin-right: 5px;
+  top: 0px;
+  position: relative;
+}
+.productImageThumbnail {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  border: 1px solid var(--mainColor);
+  width: 90%;
+  border-radius: 5px;
+}
+.prdtImgThumbInner {
+  padding: 2px;
+}
+.prdtImgThumbInner img {
+  width: 39px;
+  height: 38px;
+  border-radius: 5px 0 0 5px;
+}
+.prdtImgThumbInnerText {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  min-height: 38px;
+  border-left: 1px solid;
+  width: 72%;
+}
+.prdtImgThumbInnerText p {
+  margin-bottom: 3px;
+  text-align: center;
+  color: var(--darkGray);
+  font-size: 1rem;
+}
+.imgRemoveIconMain {
+  position: absolute;
+  top: 3px;
+  /* margin-left: 60px; */
+  z-index: 99;
+}
+.imgRemoveIcon {
+  background: url("../../../assets/icons/Close.svg");
+  background-size: cover;
+  width: 20px;
+  height: 20px;
+  display: block;
+  margin-right: -15px;
+  top: 6px;
+  left: 50px;
+  position: relative;
+}
+.inputFieldErrorMsg {
+  color: red;
+  height: 25px;
+}
+.productItemListMain {
+  width: 100%;
+}
+.headingSpace {
+}
+.withRsBox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+}
+.withRsBox p {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0;
+}
+.withRsBox p span {
+  position: absolute;
+  top: 3px;
+}
+.withRsBox p input {
+  padding-left: 25px !important;
+}
+.catalogProductitemlList .productItemImageMain {
+  top: 0;
+}
+.catalogProductitemlList .prdDltBtn {
+  top: 0;
+}
+.catalogItemPriceInput {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 0;
+  position: relative;
+}
+.catalogItemPriceInput span {
+  font-size: 0.85rem;
+  color: var(--mainColor);
+  position: absolute;
+}
+.multipileProducttr .form-group .catalogItemPriceInput input.form-control {
+  padding-left: 22px;
+}
+.viewOrderTable.catalogItemListTable thead tr th:nth-child(1),
+.viewOrderTable.catalogItemListTable tbody tr td:nth-child(1) {
+  width: 5%;
+}
+.viewOrderTable.catalogItemListTable thead tr th:nth-child(2),
+.viewOrderTable.catalogItemListTable tbody tr td:nth-child(2) {
+  width: 10%;
+  text-align: center;
+}
+.viewOrderTable.catalogItemListTable thead tr th:nth-child(3),
+.viewOrderTable.catalogItemListTable tbody tr td:nth-child(3) {
+  width: 26%;
+  text-align: left;
+}
+.viewOrderTable.catalogItemListTable thead tr th:nth-child(4),
+.viewOrderTable.catalogItemListTable tbody tr td:nth-child(4) {
+  width: 26%;
+  text-align: left;
+}
+.viewOrderTable.catalogItemListTable thead tr th:nth-child(5),
+.viewOrderTable.catalogItemListTable tbody tr td:nth-child(5) {
+  width: 26%;
+  text-align: left;
+}
+.viewOrderTable.catalogItemListTable thead tr th:nth-child(6),
+.viewOrderTable.catalogItemListTable tbody tr td:nth-child(6) {
+  width: 5%;
+  text-align: left;
+}
+.table-bordered.viewOrderTable {
+}

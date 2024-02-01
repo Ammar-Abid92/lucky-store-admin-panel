@@ -1,0 +1,236 @@
+.orderDetailTop {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+}
+.orderDetailInner {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0px 0;
+}
+.orderDetailBox {
+  float: left;
+  width: 100%;
+  text-align: center;
+  margin: 0 0px;
+  padding: 0px 0;
+}
+
+.orderDetailBoxBorder::before {
+  content: "";
+  width: 1px;
+  height: 40px;
+  border-left: 1px solid #ddd;
+  position: absolute;
+  left: 14px;
+  top: 8px;
+}
+.orderDetailBoxBorder::after {
+  content: "";
+  width: 1px;
+  height: 40px;
+  border-left: 1px solid #ddd;
+  position: absolute;
+  right: 14px;
+  top: 8px;
+}
+.orderDetailBoxBorderAfter::after {
+  content: "";
+  width: 1px;
+  height: 40px;
+  border-left: 1px solid #ddd;
+  position: absolute;
+  right: 14px;
+  top: 8px;
+}
+.orderDetailBox p:nth-child(1) {
+  font-weight: 400;
+  color: var(--darkGray);
+  font-size: 0.95rem;
+  margin: 0;
+}
+.orderDetailBox p:nth-child(2) {
+  color: #555;
+  font-weight: 300;
+  font-size: 1.14rem;
+  margin: 2px 0 0;
+  text-transform: capitalize;
+}
+.orderDate {
+}
+.orderDetailBottom {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 0;
+}
+.orderDetailBottom .viewFirstHeading h1 {
+  color: #555;
+  margin-bottom: 10px;
+}
+.orderProductDetailMain {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.table-hover.orderDtlTbl tbody tr:hover {
+  background: transparent;
+}
+.viewOrderTable.orderDtlTbl thead tr th:nth-child(1),
+.viewOrderTable.orderDtlTbl tbody tr td:nth-child(1) {
+  width: 5%;
+  text-align: center;
+}
+.viewOrderTable.orderDtlTbl thead tr th:nth-child(2),
+.viewOrderTable.orderDtlTbl tbody tr td:nth-child(2) {
+  width: 10%;
+  text-align: center;
+}
+.viewOrderTable.orderDtlTbl thead tr th:nth-child(3),
+.viewOrderTable.orderDtlTbl tbody tr td:nth-child(3) {
+  width: 25%;
+  text-align: left;
+}
+.viewOrderTable.orderDtlTbl thead tr th:nth-child(4),
+.viewOrderTable.orderDtlTbl tbody tr td:nth-child(4) {
+  width: 11%;
+  text-align: center;
+}
+.viewOrderTable.orderDtlTbl thead tr th:nth-child(5),
+.viewOrderTable.orderDtlTbl tbody tr td:nth-child(5) {
+  width: 11%;
+  text-align: center;
+}
+.viewOrderTable.orderDtlTbl thead tr th:nth-child(6),
+.viewOrderTable.orderDtlTbl tbody tr td:nth-child(6) {
+  width: 11%;
+  text-align: center;
+}
+.viewOrderTable.orderDtlTbl thead tr th:nth-child(7),
+.viewOrderTable.orderDtlTbl tbody tr td:nth-child(7) {
+  width: 11%;
+  text-align: right;
+  font-weight: 400;
+}
+.viewOrderTable.orderDtlTbl thead tr th:nth-child(8),
+.viewOrderTable.orderDtlTbl tbody tr td:nth-child(8) {
+  width: 11%;
+  text-align: right;
+  font-weight: 400;
+}
+.viewOrderTable.orderDtlTbl thead tr th {
+  font-size: 1rem;
+  padding: 12px 15px;
+}
+.viewOrderTable.orderDtlTbl tbody tr td {
+  padding: 10px 15px;
+  font-size: 0.95rem;
+}
+.viewOrderTable.orderDtlTbl tbody tr td img {
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+}
+.tblproductName {
+}
+.tblproductDescription {
+}
+.tblproductVariants b {
+  margin: 0 10px 0px 0;
+}
+.tblproductVariants span {
+  margin: 0px 15px 0px 0;
+}
+.orderDetailBottomCustomer {
+  width: 50%;
+  float: left;
+}
+.orderDetailBottomCustomer p {
+  margin: 5px 0px 5px;
+  float: left;
+  width: 100%;
+}
+.orderDetailBottomCustomer p span:nth-child(1) {
+  color: #555;
+  font-weight: 300;
+  min-width: 100px;
+  float: left;
+  font-size: 0.95rem;
+}
+.orderDetailBottomCustomer p span:nth-child(2) {
+  font-weight: 400;
+  color: #555;
+  font-size: 0.95rem;
+}
+.orderDetailBottomPrice {
+  width: 50%;
+  float: left;
+  text-align: right;
+}
+.orderDetailBottomPrice p {
+  margin: 5px 0px 5px;
+  float: left;
+  width: 100%;
+}
+.orderDetailBottomPrice p span:nth-child(1) {
+  color: #555;
+  font-weight: 300;
+  min-width: 400px;
+  font-size: 0.95rem;
+}
+.orderDetailBottomPrice p span:nth-child(2) {
+  font-weight: 400;
+  color: #555;
+  padding: 0 0px;
+  min-width: 140px;
+  float: right;
+  font-size: 1rem;
+}
+.bottomBtnCntMain {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 25px 0;
+  padding: 10px 0;
+}
+.bottomBtnCnt {
+  font-size: 1rem;
+  border-radius: 5px;
+  padding: 10px 20px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2) !important;
+  margin: 0 10px;
+  border: 1px solid;
+  min-width: 160px;
+}
+.bottomBtnCnt:hover {
+  opacity: 0.9;
+}
+.variantsColor {
+  margin: 0 0 4px 0;
+}
+.variantsColor span {
+  font-size: 0.8rem;
+}
+.variantsSize {
+  margin: 0;
+}
+.variantsSize span {
+  font-size: 0.8rem;
+}
+.orderDetialsBack {
+  display: flex;
+  flex-direction: row;
+}
+.orderDetialsBack .innerHeaderAction {
+  margin-right: 0px;
+}
+.textCapitalize {
+  text-transform: capitalize;
+}
