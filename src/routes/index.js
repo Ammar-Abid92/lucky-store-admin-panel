@@ -25,11 +25,12 @@ import Home from "../components/container/Home";
 import { connect } from "react-redux";
 import React from "react";
 
-const Routes = ({ user }) => {
+const Routes = () => {
+  const user = JSON.parse(localStorage.getItem('userConfirmation'));
   return (
     <Router>
       <>
-        {!user?.vanity_url ? (
+        {!user ? (
           <Switch>
             <Route path="/" exact component={Login} />
             <Route path="/Login" component={Login} />

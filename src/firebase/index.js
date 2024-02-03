@@ -1,78 +1,67 @@
-// import Firebase from "firebase";
-// // import "firebase/analytics";
-// // import * as firebase from "firebase/app";
+// import firebase from "firebase/app";
+// import 'firebase/analytics';
+// import "firebase/messaging";
+
 // const firebaseConfig = {
-//     apiKey: "AIzaSyCh2P3PrTWvxS1tEuYCF05vE5uclJcemG0",
-//     authDomain: "oscar-dukaan.firebaseapp.com",
-//     databaseURL: "https://oscar-dukaan.firebaseio.com",
-//     projectId: "oscar-dukaan",
-//     storageBucket: "oscar-dukaan.appspot.com",
-//     messagingSenderId: "292916785359",
-//     appId: "1:292916785359:web:2b22330f1dadecb60b47ba",
-//     measurementId: "G-H3QV79QVEW"
+//     apiKey: "AIzaSyBw6RjOQwSUZ0IejRiWDfmF8JiTa7rurpw",
+//     authDomain: "lucky-stores-fb252.firebaseapp.com",
+//     projectId: "lucky-stores-fb252",
+//     storageBucket: "lucky-stores-fb252.appspot.com",
+//     messagingSenderId: "206970926034",
+//     appId: "1:206970926034:web:8151169fc340a554fb4e0b",
+//     measurementId: "G-19PTLYNHJR"
 // };
 
-// if (typeof window !== "undefined" && !Firebase.apps.length) {
-//     Firebase.initializeApp(firebaseConfig);
-//     Firebase.analytics();
-// }
 
-// export const analytics = Firebase.analytics();
-// export const firebase = Firebase;
 
-// const messaging = Firebase.messaging();
 
-// export const onMessageListener = () =>
-//   new Promise((resolve) => {
-//     messaging.onMessage((payload) => {
-//       resolve(payload);
-//     });
-// });
-
-import Firebase from "firebase/app";
+import firebase from 'firebase/app';
+import 'firebase/auth';
 import 'firebase/analytics';
 import "firebase/messaging";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCh2P3PrTWvxS1tEuYCF05vE5uclJcemG0",
-    authDomain: "oscar-dukaan.firebaseapp.com",
-    databaseURL: "https://oscar-dukaan.firebaseio.com",
-    projectId: "oscar-dukaan",
-    storageBucket: "oscar-dukaan.appspot.com",
-    messagingSenderId: "292916785359",
-    appId: "1:292916785359:web:2b22330f1dadecb60b47ba",
-    measurementId: "G-H3QV79QVEW"
+    apiKey: "AIzaSyBw6RjOQwSUZ0IejRiWDfmF8JiTa7rurpw",
+    authDomain: "lucky-stores-fb252.firebaseapp.com",
+    projectId: "lucky-stores-fb252",
+    storageBucket: "lucky-stores-fb252.appspot.com",
+    messagingSenderId: "206970926034",
+    appId: "1:206970926034:web:8151169fc340a554fb4e0b",
+    measurementId: "G-19PTLYNHJR"
 };
-
-Firebase.initializeApp(firebaseConfig);
-export let analytics = Firebase.analytics()
-const messaging = Firebase.messaging();
 
 const { REACT_APP_VAPID_KEY } = process.env;
 const publicKey = REACT_APP_VAPID_KEY;
 
-export const getToken = async () => {
-    let currentToken = "";
+// const messaging = firebase.messaging();
 
-    try {
-        currentToken = await messaging.getToken({ vapidKey: publicKey });
-        if (currentToken) {
-            return currentToken
-        } else {
-            return false
-        }
-    } catch (error) {
-        console.log("An error occurred while retrieving token. ", error);
-    }
+// export const getToken = async () => {
+//     let currentToken = "";
 
-    return currentToken;
-};
+//     try {
+//         currentToken = await messaging.getToken({ vapidKey: publicKey });
+//         if (currentToken) {
+//             return currentToken
+//         } else {
+//             return false
+//         }
+//     } catch (error) {
+//         console.log("An error occurred while retrieving token. ", error);
+//     }
 
-export const onMessageListener = () =>
-    new Promise((resolve) => {
-        messaging.onMessage((payload) => {
-            resolve(payload);
-        });
-    });
+//     return currentToken;
+// };
 
-export const firebase = Firebase;
+// export const onMessageListener = () => {
+//     new Promise((resolve) => {
+//         messaging.onMessage((payload) => {
+//             resolve(payload);
+//         });
+//     });
+// }
+
+firebase.initializeApp(firebaseConfig);
+
+export const auth = firebase.auth();
+export const analytics = firebase.analytics();
+export default firebase;

@@ -1,7 +1,8 @@
 import { getTokoAnalytics } from "../../../oscar-pos-core/actions/analyticsMerchant";
 import { getDukaanOrdersFromCloud } from "../../../oscar-pos-core/actions";
 import { BASE_URL, CUSTOMER_BASE_URL } from "../../../constants";
-import { onMessageListener, analytics } from "../../../firebase";
+// import { onMessageListener, analytics } from "../../../firebase";
+import { analytics } from "../../../firebase";
 import React, { useCallback, useEffect, useState } from "react";
 import { formatNum } from "../../../oscar-pos-core/constants";
 import DashboardAction from "../../common/DashboardAction";
@@ -101,16 +102,16 @@ const Home = ({ history, location, user, analytics, orders }) => {
   }, [user.phone_number]);
 
   useEffect(() => {
-    onMessageListener()
-      .then((res) => {
-        analytics.logEvent('incoming_order');
-        getOrder();
-        setName(res.data.name);
-        setCustNumber(res.data.phone_number);
-        setOrderId(res.data.order_id);
-        setOrderModal(true);
-      })
-      .catch((err) => console.log("failed: ", err));
+    // onMessageListener()
+    //   .then((res) => {
+    //     analytics.logEvent('incoming_order');
+    //     getOrder();
+    //     setName(res.data.name);
+    //     setCustNumber(res.data.phone_number);
+    //     setOrderId(res.data.order_id);
+    //     setOrderModal(true);
+    //   })
+    //   .catch((err) => console.log("failed: ", err));
   }, [getOrder]);
 
   useEffect(() => {

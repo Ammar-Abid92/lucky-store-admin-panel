@@ -1,5 +1,4 @@
 import tElenor from "../../../assets/images/Telenor.png";
-import { analytics, getToken } from "../../../firebase";
 import sCom from "../../../assets/images/SCO-Logo.png";
 import uFone from "../../../assets/images/Ufone.png";
 import zOng from "../../../assets/images/zong.png";
@@ -21,6 +20,7 @@ import {
   getUser,
   login,
 } from "../../../oscar-pos-core/actions";
+import firebase, { analytics } from "../../../firebase";
 
 const DURATION = "59";
 
@@ -35,7 +35,7 @@ const VerificationScreen = ({ history, user, dispatch }) => {
   const [zong, setZong] = useState(false);
   const [jazz, setJazz] = useState(false);
   const [scom, setScom] = useState(false);
-  const [code, setCode] = useState("");
+  const [verificationCode, setVerificationCode] = useState("");
   const OtpInputRef = useRef();
 
   useEffect(() => {
@@ -59,8 +59,8 @@ const VerificationScreen = ({ history, user, dispatch }) => {
     let params = {
       phone_number: user.phone_number.toString(),
       telco: telco ? telco : null,
-      voice_otp: voice_otp ? voice_otp : false,
     };
+
     resendCode(params, BASE_URL, true)
       .then((resp) => {
         let userObj = { ...user };
@@ -70,7 +70,7 @@ const VerificationScreen = ({ history, user, dispatch }) => {
             setTimeLeft(DURATION);
             setShowResendCode(false);
             setInvalidCode(false);
-            setCode("");
+            setVerificationCode("");
           })
           .catch((err) => {
             console.log("catch user updated from resendCode: ", err);
@@ -125,78 +125,25 @@ const VerificationScreen = ({ history, user, dispatch }) => {
     }
   };
 
+  const handleVerifyCode = async (otp) => {
+    try {
+      const confirmation = JSON.parse(localStorage.getItem('userConfirmation'));
+      console.log('confirmation', confirmation)
+      const confirmationSuccess = await confirmation.confirm(otp);
+      if (confirmationSuccess) console.log('Phone number verified successfully!');
+    } catch (error) {
+      console.error('Error verifying code:', error);
+    }
+  };
+
   const handleChange = async (otp) => {
     analytics.logEvent('entering_code');
     setInvalidCode(false);
-    setCode(otp);
+    setVerificationCode(otp);
 
-    if (otp.length == 4) {
+    if (otp.length === 6) {
       setLoading(true);
-      const fcmToken = await getToken();
-      let obj = {
-        activation_code: otp,
-        phone_number: user.phone_number,
-        device_token: fcmToken,
-      };
-      login(obj, BASE_URL)
-        .then((res) => {
-          if (res.data.status == false) {
-            setInvalidCode("Invalid code");
-            OtpInputRef.current.focusInput(0);
-            setLoading(false);
-            setCode("");
-            return;
-          } else {
-            analytics.logEvent('correct_code', { code: otp });
-            Cookies.set("token", res.data.token);
-            // createUserInRedux(res.data.data).then(res => {
-            //     if (!res.vanity_url) {
-            //         history.push('/AddBusinessDetails');
-            //     } else {
-            //         history.push('/Home')
-            //     }
-            // }).catch(err => {
-            //     console.log('err', err);
-            //     return;
-            // })
-
-            if (res.data.data.country) {
-              res.data.data.currency = user.currency;
-
-              updateUserInRedux(res.data.data).then((res) => {
-                if (!res.vanity_url) {
-                  history.push("/AddBusinessDetails");
-                } else {
-                  analytics.logEvent('login_successful');
-                  history.push("/Home");
-                }
-              });
-            } else {
-              let params = {
-                country: user.country_id,
-              };
-              res.data.data.currency = user.currency;
-              res.data.data.country = user.country_id;
-
-              updateDukaanUserToCloud(params, BASE_URL)
-                .then((upd_res) => {
-                  updateUserInRedux(res.data.data).then((res) => {
-                    if (!res.vanity_url) {
-                      history.push("/AddBusinessDetails");
-                    } else {
-                      analytics.logEvent('login_successful');
-                      history.push("/Home");
-                    }
-                  });
-                })
-                .catch((err) => console.log("update country Error:", err));
-            }
-          }
-        })
-        .catch((error) => {
-          setLoading(false);
-          console.log("error from validateOTP: ", error);
-        });
+      handleVerifyCode(otp);
     }
   };
 
@@ -256,15 +203,15 @@ const VerificationScreen = ({ history, user, dispatch }) => {
             <div className="col-sm-5">
               <div className="veirficationCardBox">
                 <div className="verificationInputMainCont">
-                  <p className="enterDigitTex">Enter 4 Digits Code</p>
+                  <p className="enterDigitTex">Enter 6 Digits Code</p>
                   <div className="verificationInputInnerMain">
                     <OtpInput
                       shouldAutoFocus={true}
                       containerStyle={{ width: "75%" }}
                       className="verificationInputInnerCont"
-                      value={code}
+                      value={verificationCode}
                       onChange={handleChange}
-                      numInputs={4}
+                      numInputs={6}
                       isInputNum={true}
                       ref={(e) => (OtpInputRef.current = e)}
                     />
