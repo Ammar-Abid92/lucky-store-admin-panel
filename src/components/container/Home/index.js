@@ -1,8 +1,6 @@
 import { getTokoAnalytics } from "../../../oscar-pos-core/actions/analyticsMerchant";
 import { getDukaanOrdersFromCloud } from "../../../oscar-pos-core/actions";
 import { BASE_URL, CUSTOMER_BASE_URL } from "../../../constants";
-// import { onMessageListener, analytics } from "../../../firebase";
-import { analytics } from "../../../firebase";
 import React, { useCallback, useEffect, useState } from "react";
 import { formatNum } from "../../../oscar-pos-core/constants";
 import DashboardAction from "../../common/DashboardAction";
@@ -13,6 +11,7 @@ import { connect } from "react-redux";
 import OrderItem from "./OrderItem";
 import moment from "moment";
 import "./style.css";
+import firebase from "../../../firebase";
 
 var BUTTONS = [
   {
@@ -29,9 +28,9 @@ var BUTTONS = [
   },
 ];
 
-const Home = ({ history, location, user, analytics, orders }) => {
+const Home = ({ history, location, user, analytics }) => {
   const [analyticsViewText, setAnalyticsViewText] = useState("Life time");
-  const [filteredOrders, setFilteredOrders] = useState(orders);
+  const [orders, setOrders] = useState([]);
   const [analyticsDate, setAnalyticsDate] = useState("");
   const [analyticsData, setAnalyticsData] = useState({});
   const [orderModal, setOrderModal] = useState(false);
@@ -42,6 +41,7 @@ const Home = ({ history, location, user, analytics, orders }) => {
   const [orderId, setOrderId] = useState("");
   const [name, setName] = useState("");
 
+  const db = firebase.firestore();
 
   const getFilteredOrders = useCallback((date) => {
     let startTime = new Date(date.start_date).getTime();
@@ -53,9 +53,9 @@ const Home = ({ history, location, user, analytics, orders }) => {
     });
 
     if (filter == "All") {
-      SortDefaultOrders(filtOrders).then((res) => setFilteredOrders(res));
+      SortDefaultOrders(filtOrders).then((res) => setOrders(res));
     } else {
-      setFilteredOrders([
+      setOrders([
         ...filtOrders.filter(
           (x) => x.status.toLowerCase() == filter.toLowerCase()
         ),
@@ -63,60 +63,60 @@ const Home = ({ history, location, user, analytics, orders }) => {
     }
   }, [filter, orders]);
 
-  useEffect(() => {
-    if (analyticsViewText === "Life time") {
-      if (filter == "All") {
-        SortDefaultOrders(orders).then((res) => setFilteredOrders(res));
-      } else {
-        setFilteredOrders([
-          ...orders.filter(
-            (x) => x.status.toLowerCase() == filter.toLowerCase()
-          ),
-        ]);
-      }
-    } else {
-      getFilteredOrders(analyticsDate);
-    }
-  }, [analyticsDate, analyticsViewText, filter, getFilteredOrders, orders]);
+  // useEffect(() => {
+  //   if (analyticsViewText === "Life time") {
+  //     if (filter == "All") {
+  //       SortDefaultOrders(orders).then((res) => setOrders(res));
+  //     } else {
+  //       setOrders([
+  //         ...orders.filter(
+  //           (x) => x.status.toLowerCase() == filter.toLowerCase()
+  //         ),
+  //       ]);
+  //     }
+  //   } else {
+  //     getFilteredOrders(analyticsDate);
+  //   }
+  // }, [analyticsDate, analyticsViewText, filter, getFilteredOrders, orders]);
 
-  const getOrder = useCallback(() => {
-    let analyticParams = {
-      phone_number: user.phone_number,
-      start_date: "2020-10-26",
-      end_date: moment().format("YYYY-MM-DD"),
+  useEffect(() => {
+    // Function to fetch orders from Firestore
+    const fetchOrders = async () => {
+      try {
+        const ordersCollection = await db.collection('orders').get();
+        const ordersArray = ordersCollection.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        console.log('orders', ordersArray)
+        setOrders(ordersArray);
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+      }
     };
 
-    Promise.all([
-      getDukaanOrdersFromCloud(BASE_URL, {
-        phone_number: user.phone_number,
-        page_size: 4000
-      }),
-      getTokoAnalytics(BASE_URL, analyticParams),
-    ])
-      .then((res) => {
-        SortDefaultOrders(res.results).then((res) => setFilteredOrders(res));
-      })
-      .catch((err) => {
-        console.log("error at promise all", err);
-      });
-  }, [user.phone_number]);
+    // Call the function to fetch orders
+    fetchOrders();
+  }, []);
 
-  useEffect(() => {
-    // onMessageListener()
-    //   .then((res) => {
-    //     analytics.logEvent('incoming_order');
-    //     getOrder();
-    //     setName(res.data.name);
-    //     setCustNumber(res.data.phone_number);
-    //     setOrderId(res.data.order_id);
-    //     setOrderModal(true);
-    //   })
-    //   .catch((err) => console.log("failed: ", err));
-  }, [getOrder]);
+  // const getOrder = useCallback(() => {
+  //   let analyticParams = {
+  //     phone_number: user.phone_number,
+  //     start_date: "2020-10-26",
+  //     end_date: moment().format("YYYY-MM-DD"),
+  //   };
 
-  useEffect(() => {
-    getOrder();
-  }, [getOrder, location]);
+  //   Promise.all([
+  //     getDukaanOrdersFromCloud(BASE_URL, {
+  //       phone_number: user.phone_number,
+  //       page_size: 4000
+  //     }),
+  //     getTokoAnalytics(BASE_URL, analyticParams),
+  //   ])
+  //     .then((res) => {
+  //       SortDefaultOrders(res.results).then((res) => setOrders(res));
+  //     })
+  //     .catch((err) => {
+  //       console.log("error at promise all", err);
+  //     });
+  // }, [user.phone_number]);
 
   const SortDefaultOrders = (data) => {
     let pendingOrders,
@@ -257,39 +257,6 @@ const Home = ({ history, location, user, analytics, orders }) => {
             />
             <div className={"col-sm-10"}>
               <div className="RightSectionMain">
-                <div className="homeViewFirstSection">
-                  <div className="col-sm-6">
-                    <div className="firstViewLeftSide">
-                      <h3>{user.name}</h3>
-                      <p>
-                        Start selling online. Share your store link with
-                        customers and friends
-                      </p>
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="firstViewRightSide">
-                      <div className="storeLinkSide">
-                        <p>Your store link</p>
-                        <p>
-                          <a>
-                            {user.vanity_url + "." + CUSTOMER_BASE_URL}
-                          </a>
-                        </p>
-                      </div>
-                      <button
-                        className="storeShare login_btn_next"
-                        onClick={shareStore}
-                      >
-                        <span>
-                          <i className="storeShareIcon"></i>
-                        </span>
-                        <span>Share</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
                 <div className="homeViewSecondSection mb30">
                   <div className="homeViewSecondSectionTop mb20">
                     <div className="col-sm-10">
@@ -385,7 +352,7 @@ const Home = ({ history, location, user, analytics, orders }) => {
                           </li>
                         </ul>
                       </div>
-                      {filteredOrders.length == 0 ? (
+                      {orders.length == 0 ? (
                         <div className="placeHolderContMain noOrderFound">
                           <p>
                             <i className="orderPlaceholderIcon"></i>
@@ -402,13 +369,12 @@ const Home = ({ history, location, user, analytics, orders }) => {
                         </div>
                       ) : (
                         <div className="orderListingViewMain">
-                          {filteredOrders.map((item, index) => {
+                          {orders.map((eachOrder, index) => {
                             return (
                               <div key={index}>
                                 <OrderItem
-                                  item={item}
+                                  eachOrder={eachOrder}
                                   history={history}
-                                  user={user}
                                 />
                               </div>
                             );

@@ -3,46 +3,46 @@ import { formatNum } from "../../../oscar-pos-core/constants";
 import React from "react";
 import "./style.css";
 
-const OrderItem = ({ item, history, user }) => {
+const OrderItem = ({ eachOrder, history }) => {
   const navigateToDetails = (e) => {
     e.stopPropagation();
-    history.push("/OrderDetails/" + item._id);
+    history.push("/OrderDetails/" + eachOrder?.id);
   };
+  console.log('eachOrder', eachOrder);
 
   return (
     <div className="thirdSectionBodybox" onClick={(e) => navigateToDetails(e)}>
       <div className="col-md-3 col-lg-3 col-xl-4">
         <div className="orderLeftSide">
-          <p>{item.name}</p>
+          <p>{eachOrder.name}</p>
           <p>
-            {item.order.products.length +
-              (item.order.products.length > 1 ? " items" : " item")}
+            {eachOrder?.order_items + " items"}
           </p>
         </div>
       </div>
       <div className="col-md-3 col-lg-3 col-xl-4">
         <div className="orderMiddleSide">
           <p>
-            {user ? (user.currency ? user.currency : "Rs. ") : "Rs. "}{" "}
-            {formatNum(item.order.total_bill)}
+            Rs{" "}
+            {eachOrder?.order_total}
           </p>
-          <p>Order Date: {formatCreationDate(item.created)}</p>
+          {/* <p>Order Date: {formatCreationDate(eachOrder.created)}</p> */}
         </div>
       </div>
-      {item.status === "declined" ||
-        item.status === "delivered" ||
-        item.status === "cancelled" ? (
+      {eachOrder.order_status === "declined" ||
+        eachOrder.order_status === "delivered" ||
+        eachOrder.order_status === "cancelled" ? (
         <div className="col-md-6 col-lg-6 col-xl-4">
           <div className="orderRightActionSide">
             <div className="OrderListStatusMain">
               <span
                 style={{
                   backgroundColor:
-                    item.status === "declined"
+                    eachOrder.order_status === "declined"
                       ? themeStyleSheet.red
-                      : item.status === "delivered"
+                      : eachOrder.order_status === "delivered"
                         ? themeStyleSheet.brightGreen
-                        : item.status === "cancelled"
+                        : eachOrder.order_status === "cancelled"
                           ? themeStyleSheet.mainColor
                           : themeStyleSheet.mainColor,
                 }}
@@ -51,16 +51,16 @@ const OrderItem = ({ item, history, user }) => {
                 className="OrderListStatus"
                 style={{
                   color:
-                    item.status === "declined"
+                    eachOrder.order_status === "declined"
                       ? themeStyleSheet.red
-                      : item.status === "delivered"
+                      : eachOrder.order_status === "delivered"
                         ? themeStyleSheet.brightGreen
-                        : item.status === "cancelled"
+                        : eachOrder.order_status === "cancelled"
                           ? themeStyleSheet.mainColor
                           : themeStyleSheet.mainColor,
                 }}
               >
-                {item.status}
+                {eachOrder.order_status}
               </span>
             </div>
           </div>
@@ -72,46 +72,46 @@ const OrderItem = ({ item, history, user }) => {
               className="orderRightActionSidebutton cancelOrder"
               style={{
                 backgroundColor: themeStyleSheet.white,
-                border: `1px solid ${item.status === "pending"
-                    ? themeStyleSheet.red
-                    : themeStyleSheet.mainColor
+                border: `1px solid ${eachOrder.order_status === "pending"
+                  ? themeStyleSheet.red
+                  : themeStyleSheet.mainColor
                   }`,
                 color:
-                  item.status === "pending"
+                  eachOrder.order_status === "pending"
                     ? themeStyleSheet.red
                     : themeStyleSheet.mainColor,
               }}
               onClick={(e) => navigateToDetails(e)}
             >
-              {item.status === "pending" ? "Decline" : "Cancel"}
+              {eachOrder.order_status === "pending" ? "Decline" : "Cancel"}
             </button>
 
             <button
               className="orderRightActionSidebutton deliverOrder"
               style={{
                 backgroundColor:
-                  item.status === "pending"
+                  eachOrder.order_status === "pending"
                     ? themeStyleSheet.brightGreen
-                    : item.status === "shipped"
+                    : eachOrder.order_status === "shipped"
                       ? themeStyleSheet.skyBlue
-                      : item.status === "delivered"
+                      : eachOrder.order_status === "delivered"
                         ? themeStyleSheet.mainColor
                         : themeStyleSheet.mainColor,
-                border: `1px solid ${item.status === "pending"
-                    ? themeStyleSheet.brightGreen
-                    : item.status === "shipped"
-                      ? themeStyleSheet.skyBlue
-                      : item.status === "delivered"
-                        ? themeStyleSheet.mainColor
-                        : themeStyleSheet.mainColor
+                border: `1px solid ${eachOrder.order_status === "pending"
+                  ? themeStyleSheet.brightGreen
+                  : eachOrder.order_status === "shipped"
+                    ? themeStyleSheet.skyBlue
+                    : eachOrder.order_status === "delivered"
+                      ? themeStyleSheet.mainColor
+                      : themeStyleSheet.mainColor
                   }`,
                 color: themeStyleSheet.white,
               }}
               onClick={(e) => navigateToDetails(e)}
             >
-              {item.status === "pending"
+              {eachOrder.order_status === "pending"
                 ? "Accept"
-                : item.status === "shipped"
+                : eachOrder.order_status === "shipped"
                   ? "Deliver"
                   : "Ship Order"}
             </button>

@@ -2,14 +2,11 @@ import { getUser, resendCode } from "../../../oscar-pos-core/actions";
 import { BASE_URL, getCurrency } from "../../../constants";
 import Pakistan from "../../../assets/images/Pakistan.png";
 import React, { useEffect, useRef, useState } from "react";
-import { Modal, Dropdown } from "react-bootstrap";
 import { Spinner } from "react-bootstrap";
 import Header from "../../common/Header";
 import { connect } from "react-redux";
 import "./style.css";
 import firebase from "../../../firebase";
-import OtpInput from "react-otp-input";
-
 
 const Login = ({ history, user, dispatch, location }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -81,7 +78,6 @@ const Login = ({ history, user, dispatch, location }) => {
     try {
       e.preventDefault();
       setLoading(true);
-      console.log('code', verificationCode)
       if (verificationCode.length === 6) {
         const isCodeVerified = await confirmationResult.confirm(verificationCode);
         if (isCodeVerified) {
@@ -89,7 +85,6 @@ const Login = ({ history, user, dispatch, location }) => {
           localStorage.setItem('userConfirmation', JSON.stringify(confirmationResult));
           setLoading(false);
         }
-        // history.push('/Home');
         window.location.reload();
       }
     } catch (error) {
@@ -195,76 +190,73 @@ const Login = ({ history, user, dispatch, location }) => {
                       else handleLogin(e);
                     }}
                   >
-                    {!confirmationResult &&
-                      <>
-                        <div className="DeliveryFormInputContainer loginForm">
-                          <div className="flagImgAndInput">
-                            <div className="flagImg">
-                              <img src={Pakistan} alt="" />
-                            </div>
-                            <div className="flagDropDownRight">
-                              <div className="flagDropSeperator"></div>
-                              <input
-                                preventAutoFocus={true}
-                                className={
-                                  country.code !== "PK" ? "prependtextAdd" : ""
-                                }
-                                name="mobile"
-                                placeholder="+923xx1234567"
-                                maxLength={getCountryValidation("maxLength")}
-                                autoComplete="off"
-                                autoFocus={true}
-                                required
-                                type="text"
-                                value={phoneNumber}
-                                onChange={(e) => handlePhone(e.target.value)}
-                              />
-                            </div>
+                    {!confirmationResult ?
+                      <div className="DeliveryFormInputContainer loginForm">
+                        <div className="flagImgAndInput">
+                          <div className="flagImg">
+                            <img src={Pakistan} alt="" />
                           </div>
-                          {errors.phone ? (
-                            <p className="inputErrorPara textCenter">
-                              {errors.phone}
-                            </p>
-                          ) : (
-                            <p className="inputErrorPara"></p>
-                          )}
-                          <div className="loginOtpButonMain">
-                            <button
-                              type="submit"
+                          <div className="flagDropDownRight">
+                            <div className="flagDropSeperator"></div>
+                            <input
                               className={
-                                getCountryValidation("disabled")
-                                  ? "login_btn_next"
-                                  : "login_btn_next login_disable"
+                                country.code !== "PK" ? "prependtextAdd" : ""
                               }
-                              disabled={loading}
-                            >
-                              {loading ? (
-                                <Spinner
-                                  className="loaderCircle Products"
-                                  animation="border"
-                                  role="status"
-                                ></Spinner>
-                              ) : (
-                                "Next"
-                              )}
-                            </button>
+                              name="mobile"
+                              placeholder="+923xx1234567"
+                              maxLength={getCountryValidation("maxLength")}
+                              autoComplete="off"
+                              autoFocus={true}
+                              required
+                              type="text"
+                              value={phoneNumber}
+                              onChange={(e) => handlePhone(e.target.value)}
+                            />
                           </div>
                         </div>
+                        {errors.phone ? (
+                          <p className="inputErrorPara textCenter">
+                            {errors.phone}
+                          </p>
+                        ) : (
+                          <p className="inputErrorPara"></p>
+                        )}
+                        <div className="loginOtpButonMain">
+                          <button
+                            type="submit"
+                            className={
+                              getCountryValidation("disabled")
+                                ? "login_btn_next"
+                                : "login_btn_next login_disable"
+                            }
+                            disabled={loading}
+                          >
+                            {loading ? (
+                              <Spinner
+                                className="loaderCircle Products"
+                                animation="border"
+                                role="status"
+                              ></Spinner>
+                            ) : (
+                              "Next"
+                            )}
+                          </button>
+                        </div>
                         <div id="recaptcha-container"></div>
-                      </>
-                    }
-                    {confirmationResult && <div className={'otpVerificationContainer'}>
-                      <input type="text" value={verificationCode} onChange={(e) => setVerificationCode(e.target.value)} placeholder="Enter a 6 digit OTP Code" />
-                      {!loading ? <button onClick={handleVerifyCode} className={confirmationResult && verificationCode.length === 6 ? 'verifyCodeBtnEnabled' : 'verifyCodeBtnDisabled'}>Verify Code</button> :
-                        <span style={{ marginTop: '10px' }}>
-                          <Spinner
-                            className="loaderCircle verficatoinSpin"
-                            animation="border"
-                            role="status"
-                          ></Spinner>
-                        </span>
-                      }
-                    </div>
+                      </div>
+                      :
+                      <div className={'otpVerificationContainer'}>
+                        <input type="text" value={verificationCode} onChange={(e) => setVerificationCode(e.target.value)} placeholder="Enter a 6 digit OTP Code" />
+                        {!loading ? <button onClick={handleVerifyCode} className={confirmationResult && verificationCode.length === 6 ? 'verifyCodeBtnEnabled' : 'verifyCodeBtnDisabled'}>Verify Code</button> :
+                          <span style={{ marginTop: '10px' }}>
+                            <Spinner
+                              className="loaderCircle verficatoinSpin"
+                              animation="border"
+                              role="status"
+                            ></Spinner>
+                          </span>
+                        }
+                      </div>
                     }
                   </form>
                 </div>

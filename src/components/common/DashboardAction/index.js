@@ -99,7 +99,10 @@ const DashboardAction = ({ history, toggleExpanded, currentSelection }) => {
                                 </NavText>
                             </NavItem>
 
-                            <NavItem title="Logout" onClick={() => setOpen(true)} eventKey="Logout">
+                            <NavItem title="Logout" onClick={() => {
+                                localStorage.removeItem('userConfirmation');
+                                window.location.reload();
+                            }} eventKey="Logout">
                                 <NavIcon>
                                     <span>
                                         <i className="navLogoutIcon"></i>

@@ -23,6 +23,7 @@ const OrderDetails = ({ user, history, location, orders }) => {
   const [open, setOpen] = useState(false);
   const [type, setType] = useState("");
 
+
   useEffect(() => {
 
     window.scrollTo(0, 0);
@@ -53,6 +54,8 @@ const OrderDetails = ({ user, history, location, orders }) => {
       default:
         break;
     }
+
+    console.log('currentOrder', currentOrder);
     let { customer, order, _id } = currentOrder;
     let params = {
       phone_number: customer.phone_number,
@@ -153,7 +156,7 @@ const OrderDetails = ({ user, history, location, orders }) => {
     if (currentOrder?.order) {
       if (total) {
         if (currentOrder?.order?.total_bill) {
-          return currentOrder.order.total_bill;
+          return currentOrder?.order?.total_bill;
         } else {
           let price = 0;
           let productsPrice = currentOrder?.order?.products.forEach(
@@ -168,9 +171,9 @@ const OrderDetails = ({ user, history, location, orders }) => {
         }
       } else {
         let total_bill = 0;
-        for (let prod of currentOrder?.order?.products) {
-          total_bill += (prod.price || prod?.discountPrice) * prod?.quantity;
-        }
+        // for (let prod of currentOrder?.order?.products) {
+        //   total_bill += (prod.price || prod?.discountPrice) * prod?.quantity;
+        // }
         return formatNum(total_bill);
       }
     }
@@ -312,7 +315,7 @@ const OrderDetails = ({ user, history, location, orders }) => {
                           currentOrder?.order?.products?.map(
                             (product, index) => {
                               return (
-                                <tr key={product._id} key={index}>
+                                <tr key={product._id}>
                                   <td>{index + 1}</td>
                                   <td>
                                     <img
@@ -591,7 +594,7 @@ const OrderDetails = ({ user, history, location, orders }) => {
           setShippingService={setShippingService}
           toggle={toggle}
           setToggle={setToggle}
-          orderId={currentOrder._id}
+          orderId={currentOrder?.id}
         />
       </section>
     </>

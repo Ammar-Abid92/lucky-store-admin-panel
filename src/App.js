@@ -10,47 +10,49 @@ import './App.css';
 import { logout, updateUser } from './oscar-pos-core/actions';
 
 function App({ user, dispatch }) {
+  // const checkValidUser = useCallback(() => {
+  //   return new Promise((resolve, reject) => {
+  //     let url = `${BASE_URL}api/toko/checkauth/`;
+  //     // console.log('params for validateOtp:', );
+  //     axios
+  //       .get(url, {
+  //         headers: {
+  //           'Authorization': 'JWT ' + Cookies.get('token'),
+  //           'Content-Type': 'application/json'
+  //         }
+  //       })
+  //       .then((res) => {
+  //         console.log(res)
+  //         if (res.status === 200) {
+  //           dispatch(updateUser(res.data.user_info))
+  //           return resolve(res);
 
-  const checkValidUser = useCallback(() => {
-    return new Promise((resolve, reject) => {
-      let url = `${BASE_URL}api/toko/checkauth/`;
-      // console.log('params for validateOtp:', );
-      axios
-        .get(url, {
-          headers: {
-            'Authorization': 'JWT ' + Cookies.get('token'),
-            'Content-Type': 'application/json'
-          }
-        })
-        .then((res) => {
-          console.log(res)
-          if (res.status === 200) {
-            dispatch(updateUser(res.data.user_info))
-            return resolve(res);
+  //         }
+  //         reject(res.statusText)
 
-          }
-          reject(res.statusText)
+  //       })
+  //       .catch((err) => {
+  //         console.log('validate otp code err: ', err);
+  //         logout()
+  //         reject(err);
+  //       });
+  //   });
+  // }, []);
 
-        })
-        .catch((err) => {
-          console.log('validate otp code err: ', err);
-          logout()
-          reject(err);
-        });
-    });
-  }, [])
-
-
+  const timeInMilliseconds = 1800000;    // 30 mins
+  setTimeout(() => {
+    const user = JSON.parse(localStorage.getItem('userConfirmation'));
+    if (user) {
+      localStorage.removeItem('userConfirmation');
+    }
+  }, timeInMilliseconds);
 
   useEffect(() => {
-    checkValidUser()
-
-  }, [checkValidUser])
+    console.log('useEffect() called!')
+  }, [setTimeout]);
 
   return (
-
     <Routes />
-
   );
 }
 
