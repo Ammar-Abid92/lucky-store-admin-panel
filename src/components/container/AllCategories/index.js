@@ -19,7 +19,7 @@ const AllCategories = ({ history, location }) => {
   const [editCategory, setEditCategory] = useState(false);
   const [categoryId, setCatId] = useState("");
   const [expanded, setExpanded] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [toggle, setToggle] = useState(false);
   const [search, setSearch] = useState("");
   const [numOfPages, setNumOfPages] = useState(0)
@@ -56,6 +56,9 @@ const AllCategories = ({ history, location }) => {
   useEffect(() => {
     if (allCategories?.length > 0) {
       setLoading(false);
+    }
+    else {
+      if (allCategories?.length === 0) setLoading(true);
     }
   }, [allCategories]);
 

@@ -12,6 +12,7 @@ import { connect } from "react-redux";
 import "./style.css";
 import useGetCollectionData from "../../../hooks/getData";
 import firebase from '../../../firebase';
+import { addDataToCollection } from "../../../firebase/utils";
 
 const { innerHeight } = window;
 
@@ -92,8 +93,6 @@ const AddProduct = ({ setAddItems, setAddToggle }) => {
     } else return false;
   };
 
-  const db = firebase.firestore();
-
   const createProduct = async (e) => {
     e.preventDefault();
     let params = {
@@ -107,7 +106,7 @@ const AddProduct = ({ setAddItems, setAddToggle }) => {
       quantity: Number(quantity),
       unit,
     };
-    const created = await db.collection('items').add(params);
+    const created = addDataToCollection('items', params);
     if (created) {
       setSuccess(true);
       setTimeout(() => {

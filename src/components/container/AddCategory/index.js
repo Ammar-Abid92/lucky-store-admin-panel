@@ -11,31 +11,25 @@ import { Spinner } from 'react-bootstrap';
 import { store } from '../../../store';
 import { connect } from 'react-redux';
 import './style.css';
+import { addDataToCollection } from '../../../firebase/utils';
 
 const { innerHeight } = window;
-const AddCategory = ({ user, categories, setAddCategory, setToggle, fromProduct, setCategory }) => {
-
+const AddCategory = ({ user, setAddCategory, setToggle }) => {
     const [categoryName, setCategoryName] = useState('');
-    const [expanded, setExpanded] = useState(false);
     const [loading, setLoading] = useState(false);
     const [catLoad, setCatLoad] = useState(false);
     const [success, setSuccess] = useState(false);
     const [errors, setErrors] = useState({});
     const [open, setOpen] = useState(false);
     const [image, setImage] = useState('');
+    const [description, setDescription] = useState('');
 
 
+    // const getCategories = () => {
+    //     getDukaanCategoryFromCloud(user.vanity_url, BASE_URL, {
 
-
-    const getCategories = () => {
-        getDukaanCategoryFromCloud(user.vanity_url, BASE_URL, {
-
-        })
-    }
-
-    useEffect(() => {
-        getCategories();
-    }, [])
+    //     })
+    // }
 
     const imgUpload = (e) => {
         setLoading(true);
@@ -68,51 +62,53 @@ const AddCategory = ({ user, categories, setAddCategory, setToggle, fromProduct,
         }
     }
 
+    const options = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        timeZoneName: 'short',
+        timeZone: 'UTC'
+    };
+
     const submitCategory = () => {
         setCatLoad(true);
-
+        const currentDate = new Date();
+        const formattedDate = new Intl.DateTimeFormat('en-US', options).format(currentDate);
         let params = {
+            createdAt: formattedDate,
             name: categoryName,
-            phone_number: user.phone_number,
-            photo: image,
+            description,
+            image: 'https://aradbranding.com/en/uploads/topics/mceu_79701281561671280096178.jpg',
         };
-        if (!categoryName) {
+
+        if (!categoryName || !description) {
             setCatLoad(false);
             setErrors({
-                category: 'Category name is required',
+                category: 'Category name or Description is missing',
             })
             return;
         }
-        let myArr = categories.filter((x) => (x.name).toLowerCase() == (params.name).toLowerCase());
-        if (myArr.length > 0) {
-            setErrors({
-                category: 'Category name already exists',
-            })
-            setCatLoad(false);
-            return;
-        } else {
-            addDukaanCategoryToCloud(params, user.vanity_url, BASE_URL)
-                .then(res => {
-                    analytics.logEvent('add_category');
-                    params._id = res.data.id.toString();
-                    store.dispatch({
-                        type: CATEGORY.ADD_CATEGORY,
-                        data: params,
-                    });
-                    fromProduct && setCategory(params)
-                    setCatLoad(false);
-                    setSuccess("CATEGORY ADDED SUCCESSFULLY");
-                    setTimeout(() => {
-                        setSuccess(false);
-                        backAction();
-                    }, 2000);
-                    // Firebase.logEvent('add_category', { ...params, id: res.data.id });
-                })
-                .catch(err => {
-                    console.log('Error pushing Category to cloud', err);
-                    setCatLoad(false);
-                });
+        else {
+            const doc = addDataToCollection('categories', params);
+            if (doc) {
+                setSuccess(true);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000)
+            }
         }
+        // let myArr = categories.filter((x) => (x.name).toLowerCase() == (params.name).toLowerCase());
+        // if (myArr.length > 0) {
+        //     setErrors({
+        //         category: 'Category name already exists',
+        //     })
+        //     setCatLoad(false);
+        //     return;
+        // } else {
+        // }
     }
 
 
@@ -156,8 +152,6 @@ const AddCategory = ({ user, categories, setAddCategory, setToggle, fromProduct,
                                     <button className="categorycloseIconimage" onClick={() => setImage(false)}>x</button>
                                 </div>
                             ) : (
-
-                                // <div className="categoryImage">
                                 <div className="uploadFIleCont">
                                     <button className="">
                                         <span>
@@ -169,8 +163,6 @@ const AddCategory = ({ user, categories, setAddCategory, setToggle, fromProduct,
                                     </button>
                                     <input type="file" accept='.png, .jpg, .jpeg' name='file' onChange={imgUpload} />
                                 </div>
-
-                                // </div>
                             )
                         }
                     </div>
@@ -187,7 +179,6 @@ const AddCategory = ({ user, categories, setAddCategory, setToggle, fromProduct,
                             <div className="form-group addItemInupt">
                                 <input autoFocus={true} className="form-control" placeholder="Enter category name" onChange={(e) => {
                                     if (e.target.value[0] !== ' ') {
-                                        console.log(e.target.value)
                                         setErrors('');
                                         setCategoryName(e.target.value)
                                         return
@@ -199,11 +190,22 @@ const AddCategory = ({ user, categories, setAddCategory, setToggle, fromProduct,
                             </div>
                         </div>
                         <button type="submit" style={{ display: 'none' }}></button>
+
+                        <div className="addItemINputRowCont">
+                            <div className="form-group textAreaField">
+                                <textarea
+                                    className="form-control"
+                                    placeholder="Enter Description"
+                                    value={description}
+                                    onChange={(e) => setDescription(e.target.value)}
+                                />
+                            </div>
+                        </div>
                     </form>
 
                 </div>
                 <div className="buttonContEditDtl" style={{ height: innerHeight * 0.11 }}>
-                    <button className={categoryName ? "login_btn_next" : "login_btn_next addItemDisable"} type="submit" disabled={catLoad || loading || success} onClick={() => loading ? alert('Your picture is uploading...') : submitCategory()} >
+                    <button className={categoryName !== '' && description !== '' ? "login_btn_next" : "login_btn_next addItemDisable"} type="submit" onClick={() => loading ? alert('Your picture is uploading...') : submitCategory()} >
                         {catLoad ?
                             <Spinner className="loaderCircle Products" animation="border" role="status"></Spinner>
                             :

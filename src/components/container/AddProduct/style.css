@@ -32,11 +32,6 @@
   outline: -webkit-focus-ring-color auto 5px;
 }
 
-.inputfile+label * {
-  /* pointer-events: none; */
-  /* in case of FastClick lib use */
-}
-
 .inputfile+label svg {
   width: 1em;
   height: 1em;
@@ -132,7 +127,7 @@
 .form-group.textAreaField {
   float: left !important;
   width: 100% !important;
-  margin: 15px 0 10px;
+  margin: 0px 0 10px;
 }
 
 .textAreaField textarea {
@@ -355,8 +350,6 @@
   /* opacity: 0.5; */
 }
 
-.addItemInupt input:hover {}
-
 .addItemInupt input:focus {
   border-color: var(--mainColor);
   color: var(--mainColor);
@@ -431,6 +424,7 @@
   color: var(--mainColor);
   height: 50px !important;
   padding: 5px 0;
+  resize: none;
   width: 100%;
 }
 
@@ -477,6 +471,7 @@
   background: var(--white);
   border: 1px solid var(--lightGray);
   color: var(--lightGray);
+  pointer-events: none;
 }
 
 .login_btn_next.addItemDisable:hover,

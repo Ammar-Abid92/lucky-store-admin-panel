@@ -1,5 +1,4 @@
 .productScreenMainCont {
-  float: left;
   width: 100%;
 }
 
@@ -11,10 +10,6 @@
   align-items: flex-start;
   width: 100%;
   margin: 25px 0;
-}
-
-.productScreenInnerCont:hover {
-  /* cursor: pointer; */
 }
 
 /* .productScreenInnerCont .productOptions {
