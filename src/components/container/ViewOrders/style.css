@@ -1,58 +1,65 @@
-.viewFirstHeading {
-}
 .viewFirstHeading h1 {
   color: var(--darkGray);
   font-size: 1.2rem;
   font-weight: var(--medium-font-weight);
   margin: 0 0 0 15px;
 }
+
 .viewOrderTable thead tr th:nth-child(1),
 .viewOrderTable tbody tr td:nth-child(1) {
-  width: 5%;
+  width: auto;
   text-align: center;
   padding: 12px 10px;
 }
+
 .viewOrderTable thead tr th:nth-child(2),
 .viewOrderTable tbody tr td:nth-child(2) {
-  width: 15%;
+  width: auto;
   text-align: right;
   padding: 12px 15px;
 }
+
 .viewOrderTable thead tr th:nth-child(3) {
-  width: 19%;
+  width: auto;
   text-align: left;
   padding: 12px 15px;
 }
+
 .viewOrderTable tbody tr td:nth-child(3) {
-  width: 19%;
+  width: auto;
   text-align: left;
   padding: 12px 15px;
   color: var(--mainColor) !important;
 }
+
 .viewOrderTable thead tr th:nth-child(4),
 .viewOrderTable tbody tr td:nth-child(4) {
-  width: 21%;
+  width: auto;
   text-align: left;
   padding: 12px 15px;
 }
+
 .viewOrderTable thead tr th:nth-child(5),
 .viewOrderTable tbody tr td:nth-child(5) {
-  width: 15%;
+  width: auto;
   text-align: right;
   padding: 12px 15px;
 }
+
 .viewOrderTable thead tr th:nth-child(6),
 .viewOrderTable tbody tr td:nth-child(6) {
-  width: 12%;
+  width: auto;
   text-align: left;
   padding: 12px 15px;
 }
+
 .viewOrderTable thead tr th:nth-child(7),
 .viewOrderTable tbody tr td:nth-child(7) {
-  width: 14%;
+  width: auto;
   text-align: center;
   padding: 12px 15px;
 }
+
 .placeHolderContMain {
   /* border: 1px solid #ddd; */
   min-height: 360px;
@@ -65,16 +72,19 @@
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
   background: var(--white);
 }
+
 .placeHolderContMain p {
   color: var(--darkGray);
   font-weight: 400;
   font-size: 1.2rem;
 }
+
 .placeholderParagraph {
   color: var(--mediumGray) !important;
   font-weight: 300 !important;
   font-size: 1rem !important;
 }
+
 .productPlaceholderIcon {
   background: url("../../../assets/icons/Products_gray.svg");
   background-size: cover;
@@ -85,6 +95,7 @@
   position: relative;
   opacity: 0.5;
 }
+
 .categoryPlaceholderIcon {
   background: url("../../../assets/icons/Category_Gray.svg");
   background-size: cover;
@@ -95,6 +106,7 @@
   position: relative;
   opacity: 0.5;
 }
+
 .orderPlaceholderIcon {
   background: url("../../../assets/icons/Orders_gray.svg");
   background-size: cover;
@@ -105,21 +117,25 @@
   position: relative;
   opacity: 0.5;
 }
+
 .placeholderButtonSection {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
 }
+
 .placeholderButtonSection button {
   margin-left: 10px;
   margin-right: 10px;
 }
+
 .placeholderParagraph a,
 .placeholderParagraph a:hover {
   color: var(--skyBlue);
   text-decoration: underline;
 }
+
 .sidepanel .placeholderParagraph a {
   color: var(--skyBlue);
   text-decoration: underline;
@@ -129,43 +145,54 @@
   padding: 0 4px 0 0;
   line-height: 30px;
 }
+
 .sidepanel .placeholderParagraph a:hover {
   color: var(--skyBlue);
   text-decoration: underline;
 }
+
 .sidepanel .placeholderParagraph,
 .sidepanel .placeholderParagraph p {
   text-align: center;
 }
-.placeholderButtonSection.tblAction {
-}
+
+.placeholderButtonSection.tblAction {}
+
 .tblAction button {
   min-width: 55px;
   min-height: 37px;
   font-size: 0.9rem;
   margin: 0 auto;
 }
+
 .declinedColor {
   color: #e51a32;
 }
+
 .acceptedColor {
   color: #4ac600;
 }
+
 .pendingColor {
   color: #f96a32;
 }
+
 .shippedColor {
   color: var(--mainColor);
 }
+
 .cancelledColor {
   color: #cecece;
 }
+
 .deliveredColor {
   color: #27aae1;
 }
+
 .searchBartop {
   margin-bottom: 0;
 }
+
 .searchBartop.form-group input {
   border: none;
   border-bottom: 1px solid;
@@ -177,12 +204,14 @@
   font-size: 0.95rem;
   box-shadow: 0 0.5px 0px rgba(221, 146, 146, 0.1);
 }
+
 .searchBartop.form-group input.form-control::placeholder {
   color: #ddd;
   /* opacity: 0.5; */
 }
-.searchBartop.form-group input:hover {
-}
+
+.searchBartop.form-group input:hover {}
+
 .searchBartop.form-group input:focus {
   border-color: var(--mainColor);
   color: var(--mainColor);
@@ -190,6 +219,7 @@
   text-shadow: none;
   box-shadow: 0 1px 0px rgba(0, 0, 0, 0.12) !important;
 }
+
 .searchBartop::before {
   background: url("../../../assets/icons/Search_icon.svg");
   background-size: cover;
@@ -203,10 +233,12 @@
   top: 6px;
   left: 15px;
 }
+
 .addItemBtnMain {
   position: absolute;
   right: -7px;
 }
+
 .viewsTopActionSection {
   display: flex;
   flex-direction: row;
@@ -218,6 +250,7 @@
   border-radius: 15px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
 }
+
 .viewsTopActionSection .row {
   width: 100%;
 }

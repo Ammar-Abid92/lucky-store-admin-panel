@@ -8,7 +8,6 @@ const OrderItem = ({ eachOrder, history }) => {
     e.stopPropagation();
     history.push("/OrderDetails/" + eachOrder?.id);
   };
-  console.log('eachOrder', eachOrder);
 
   return (
     <div className="thirdSectionBodybox" onClick={(e) => navigateToDetails(e)}>

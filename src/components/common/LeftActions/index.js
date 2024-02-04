@@ -26,9 +26,6 @@ const LeftActions = ({ history }) => {
                     onClick={() => history.push('/AllCategories')}
                 >All Categories</button>
                 <button
-                    onClick={() => history.push('/EditBusinessDetails')}
-                >Edit Business Details</button>
-                <button
                     onClick={() => {
                         logout().then(res => {
                             history.push('/');

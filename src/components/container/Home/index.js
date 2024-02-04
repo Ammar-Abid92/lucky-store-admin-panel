@@ -12,6 +12,7 @@ import OrderItem from "./OrderItem";
 import moment from "moment";
 import "./style.css";
 import firebase from "../../../firebase";
+import useGetCollectionData from "../../../hooks/getData";
 
 var BUTTONS = [
   {
@@ -30,7 +31,6 @@ var BUTTONS = [
 
 const Home = ({ history, location, user, analytics }) => {
   const [analyticsViewText, setAnalyticsViewText] = useState("Life time");
-  const [orders, setOrders] = useState([]);
   const [analyticsDate, setAnalyticsDate] = useState("");
   const [analyticsData, setAnalyticsData] = useState({});
   const [orderModal, setOrderModal] = useState(false);
@@ -40,28 +40,29 @@ const Home = ({ history, location, user, analytics }) => {
   const [filter, setFilter] = useState("All");
   const [orderId, setOrderId] = useState("");
   const [name, setName] = useState("");
+  // const [orders, setOrders] = useState("");
 
-  const db = firebase.firestore();
+  const orders = useGetCollectionData('orders');
 
-  const getFilteredOrders = useCallback((date) => {
-    let startTime = new Date(date.start_date).getTime();
-    let endTime = new Date(date.end_date).getTime();
+  // const getFilteredOrders = useCallback((date) => {
+  //   let startTime = new Date(date.start_date).getTime();
+  //   let endTime = new Date(date.end_date).getTime();
 
-    let filtOrders = orders.filter((x) => {
-      let time = new Date(x.created).getTime();
-      return time >= startTime && time <= endTime;
-    });
+  //   let filtOrders = orders.filter((x) => {
+  //     let time = new Date(x.created).getTime();
+  //     return time >= startTime && time <= endTime;
+  //   });
 
-    if (filter == "All") {
-      SortDefaultOrders(filtOrders).then((res) => setOrders(res));
-    } else {
-      setOrders([
-        ...filtOrders.filter(
-          (x) => x.status.toLowerCase() == filter.toLowerCase()
-        ),
-      ]);
-    }
-  }, [filter, orders]);
+  //   if (filter == "All") {
+  //     SortDefaultOrders(filtOrders).then((res) => setOrders(res));
+  //   } else {
+  //     setOrders([
+  //       ...filtOrders.filter(
+  //         (x) => x.status.toLowerCase() == filter.toLowerCase()
+  //       ),
+  //     ]);
+  //   }
+  // }, [filter, orders]);
 
   // useEffect(() => {
   //   if (analyticsViewText === "Life time") {
@@ -80,20 +81,7 @@ const Home = ({ history, location, user, analytics }) => {
   // }, [analyticsDate, analyticsViewText, filter, getFilteredOrders, orders]);
 
   useEffect(() => {
-    // Function to fetch orders from Firestore
-    const fetchOrders = async () => {
-      try {
-        const ordersCollection = await db.collection('orders').get();
-        const ordersArray = ordersCollection.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-        console.log('orders', ordersArray)
-        setOrders(ordersArray);
-      } catch (error) {
-        console.error('Error fetching orders:', error);
-      }
-    };
 
-    // Call the function to fetch orders
-    fetchOrders();
   }, []);
 
   // const getOrder = useCallback(() => {
@@ -149,98 +137,69 @@ const Home = ({ history, location, user, analytics }) => {
     });
   };
 
-  const getTokoAnalyticsPress = (date) => {
-    let analyticParams = {
-      phone_number: user.phone_number,
-      activation_code: user.activation_code,
-      start_date: date.start_date,
-      end_date: date.end_date,
-    };
-
-    getTokoAnalytics(BASE_URL, analyticParams)
-      .then((res) => {
-        setAnalyticsData(res);
-        console.log("response getting analytics from cloud", res);
-      })
-      .catch((err) => {
-        console.log("err getting analytics from cloud", err);
-      });
-  };
-
-  const changeAnalyticsFilter = (filterType) => {
-    let date = {};
-    analytics.logEvent('analytics_filter');
-    switch (filterType) {
-      case "Life time":
-        date = {
-          end_date: moment().format("YYYY-MM-DD"),
-          start_date: "2020-11-17",
-        };
-        setAnalyticsViewText("Life time");
-        setAnalyticsDate(date);
-        getFilteredOrders(date);
-        break;
-      case "last 7 days":
-        date = {
-          end_date: moment().format("YYYY-MM-DD"),
-          start_date: moment().subtract(7, "days").format("YYYY-MM-DD"),
-        };
-        setAnalyticsViewText("Last 7 days");
-        setAnalyticsDate(date);
-        getFilteredOrders(date);
-        break;
-      case "last 30 days":
-        date = {
-          end_date: moment().format("YYYY-MM-DD"),
-          start_date: moment().subtract(30, "days").format("YYYY-MM-DD"),
-        };
-        setAnalyticsViewText("Last 30 days");
-        setAnalyticsDate(date);
-        getFilteredOrders(date);
-        break;
-      case "last month":
-        date = {
-          end_date: moment()
-            .subtract(1, "months")
-            .endOf("month")
-            .format("YYYY-MM-DD"),
-          start_date: moment()
-            .subtract(1, "months")
-            .startOf("month")
-            .format("YYYY-MM-DD"),
-        };
-        console.log("LAST MONTH", date);
-        setAnalyticsViewText("Last month");
-        setAnalyticsDate(date);
-        getFilteredOrders(date);
-        break;
-      default:
-        date = {
-          end_date: moment().format("YYYY-MM-DD"),
-          start_date: "2020-11-17",
-        };
-        setAnalyticsViewText("Life time");
-        break;
-    }
-    getTokoAnalyticsPress(date);
-  };
+  // const changeAnalyticsFilter = (filterType) => {
+  //   let date = {};
+  //   analytics.logEvent('analytics_filter');
+  //   switch (filterType) {
+  //     case "Life time":
+  //       date = {
+  //         end_date: moment().format("YYYY-MM-DD"),
+  //         start_date: "2020-11-17",
+  //       };
+  //       setAnalyticsViewText("Life time");
+  //       setAnalyticsDate(date);
+  //       getFilteredOrders(date);
+  //       break;
+  //     case "last 7 days":
+  //       date = {
+  //         end_date: moment().format("YYYY-MM-DD"),
+  //         start_date: moment().subtract(7, "days").format("YYYY-MM-DD"),
+  //       };
+  //       setAnalyticsViewText("Last 7 days");
+  //       setAnalyticsDate(date);
+  //       getFilteredOrders(date);
+  //       break;
+  //     case "last 30 days":
+  //       date = {
+  //         end_date: moment().format("YYYY-MM-DD"),
+  //         start_date: moment().subtract(30, "days").format("YYYY-MM-DD"),
+  //       };
+  //       setAnalyticsViewText("Last 30 days");
+  //       setAnalyticsDate(date);
+  //       getFilteredOrders(date);
+  //       break;
+  //     case "last month":
+  //       date = {
+  //         end_date: moment()
+  //           .subtract(1, "months")
+  //           .endOf("month")
+  //           .format("YYYY-MM-DD"),
+  //         start_date: moment()
+  //           .subtract(1, "months")
+  //           .startOf("month")
+  //           .format("YYYY-MM-DD"),
+  //       };
+  //       console.log("LAST MONTH", date);
+  //       setAnalyticsViewText("Last month");
+  //       setAnalyticsDate(date);
+  //       getFilteredOrders(date);
+  //       break;
+  //     default:
+  //       date = {
+  //         end_date: moment().format("YYYY-MM-DD"),
+  //         start_date: "2020-11-17",
+  //       };
+  //       setAnalyticsViewText("Life time");
+  //       break;
+  //   }
+  //   getTokoAnalyticsPress(date);
+  // };
 
   const handleFilter = (value) => {
-    analytics.logEvent('orders_filter');
+    // analytics.logEvent('orders_filter');
     setFilter(value);
-  }
 
-  const shareStore = () => {
-    let number = "";
-    const MSG = `Hello! You can now order online from ${user.name} by using this link: \n\n${user.vanity_url}.${CUSTOMER_BASE_URL}\n\n Contact us at ${user.phone_number} if you need any help.\n\nThank you.`;
-    if (user.phone_number.includes("+92")) {
-      number = user.phone_number;
-    } else {
-      number = `+92${user.phone_number.substr(1)}`;
-    }
-    window.open(`https://wa.me/?text=${MSG}`);
-    analytics.logEvent('whatsapp_share');
-  };
+  }
 
   return (
     <>
@@ -273,9 +232,9 @@ const Home = ({ history, location, user, analytics }) => {
                           {BUTTONS.map((categ, index) => {
                             return (
                               <Dropdown.Item
-                                onSelect={() =>
-                                  changeAnalyticsFilter(categ.name)
-                                }
+                                // onSelect={() =>
+                                //   changeAnalyticsFilter(categ.name)
+                                // }
                                 key={index}
                               >
                                 {categ.name}
@@ -290,7 +249,7 @@ const Home = ({ history, location, user, analytics }) => {
                   <div className="homeViewSecondSectionInner">
                     <div className="col-sm-4">
                       <div className="secondSectionboxes">
-                        <h5>{analytics.orders}</h5>
+                        <h5>{orders?.length}</h5>
                         <p>Orders</p>
                       </div>
                     </div>
@@ -369,6 +328,7 @@ const Home = ({ history, location, user, analytics }) => {
                         </div>
                       ) : (
                         <div className="orderListingViewMain">
+                          {console.log('orders', orders)}
                           {orders.map((eachOrder, index) => {
                             return (
                               <div key={index}>

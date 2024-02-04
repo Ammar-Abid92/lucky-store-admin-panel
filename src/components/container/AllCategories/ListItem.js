@@ -21,7 +21,7 @@ const ListItem = ({ category, user, handleEditCat }) => {
 
         store.dispatch({
           type: CATEGORY.REMOVE_CATEGORY,
-          id: category._id,
+          id: category.id,
         });
         window.location.reload();
         setLoading(false);
@@ -44,7 +44,7 @@ const ListItem = ({ category, user, handleEditCat }) => {
     >
       <td className="prdImageBox">
         <div className="catFirstCell">
-          {category.photo != 0 ? <img src={category.photo} alt='category' /> : <img src={placeholder} />}
+          {category.image != 0 ? <img src={category.image} alt='category' /> : <img src={placeholder} />}
           <p className="productScreenproductName">{capitalizeName()}</p>
         </div>
       </td>

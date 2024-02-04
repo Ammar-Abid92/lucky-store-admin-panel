@@ -6,13 +6,25 @@ import { formatNum } from '../../../oscar-pos-core/constants';
 import AppDialog from '../../common/AppDialog';
 import { analytics } from '../../../firebase';
 import { Dropdown } from 'react-bootstrap';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { store } from '../../../store';
 import './style.css';
+import useGetCollectionData from '../../../hooks/getData';
 
-const ListItem = ({ product, user, handleEdit, index, activePage, toggleItem, setToggleItem, search }) => {
-
+const ListItem = ({ product, user, handleEdit, index, activePage, toggleItem, setToggleItem }) => {
     const [open, setOpen] = useState(false);
+    const [category, setCategory] = useState("");
+
+    const categories = useGetCollectionData('categories');
+    useEffect(() => {
+        if (categories?.length > 0) {
+            categories?.forEach((categ) => {
+                if (categ?.id === product?.category_id) {
+                    setCategory(categ?.name);
+                };
+            })
+        }
+    }, [categories]);
 
     const deleteProduct = () => {
         setOpen(false);
@@ -20,7 +32,7 @@ const ListItem = ({ product, user, handleEdit, index, activePage, toggleItem, se
             analytics.logEvent('product_deleted');
             store.dispatch({
                 type: PRODUCT.REMOVE_PRODUCT,
-                id: product._id,
+                id: product.id,
             })
         }).catch(err => {
             console.log('Error deleting product on cloud', err);
@@ -38,36 +50,6 @@ const ListItem = ({ product, user, handleEdit, index, activePage, toggleItem, se
             _id,
             isActive: !isActive,
         };
-
-        updateDukaanProductStatusToCloud(product, params, user, BASE_URL)
-            .then(res => {
-                analytics.logEvent('toggle_product_status');
-                store.dispatch({
-                    type: PRODUCT.UPDATE_PRODUCT_STATUS,
-                    data: { ...product, id: product._id },
-                });
-            })
-            .catch(err => {
-                console.log('Error Response Product Status Change', err);
-            });
-    }
-
-    const shareProduct = (e) => {
-        setToggleItem(false)
-        e.stopPropagation();
-        if (navigator.canShare) {
-            navigator.share({
-                title: 'MY PRODUCT!',
-                text: 'Check out my product listed at Toko.pk !',
-                url: user.vanity_url + '.' + CUSTOMER_BASE_URL + '/products/' + (product.slug ? product.slug : product._id)
-            })
-                .then(() => {
-                    analytics.logEvent('share_product');
-                })
-                .catch((error) => console.log('Sharing failed', error));
-        } else {
-            console.log(`Your system doesn't support sharing files.`);
-        }
     }
 
     return (
@@ -79,7 +61,7 @@ const ListItem = ({ product, user, handleEdit, index, activePage, toggleItem, se
 
                 <td >{(activePage - 1) * 10 + (index + 1)}</td>
                 <td className="prdImageBox">
-                    <img className="" src={product.photo && product.photo.length != 0 ? product.photo[0] : placeholder} />
+                    <img className="" src={product.image && product.image.length != 0 ? product.image[0] : placeholder} />
                 </td>
                 <td>
                     <p className="productScreenproductName">
@@ -87,41 +69,29 @@ const ListItem = ({ product, user, handleEdit, index, activePage, toggleItem, se
                     </p>
                 </td>
                 <td>
-                    {product.categories[0] ? product.categories[0].name : ''}
+                    <p className="productScreenproductName">
+                        {category}
+                    </p>
                 </td>
                 <td>
-                    {product.stock <= 5 ?
-                        <p className="productScreenLowStock">
-                            Low stock item
-                        </p>
-                        :
-                        <p className="productScreenproductName">
-                            {product.stock}
-                        </p>
-                    }
+                    <p className="productScreenproductName">
+                        {product?.quantity}
+                    </p>
                 </td>
                 <td>
-                    {product.perUnit}
-                    {product.discountPrice ?
-                        <span className='productListingDiscount'>
-                            Disc : %
-                        </span>
-                        :
-                        null}
-                </td>
-                <td onClick={(e) => e.stopPropagation()}>
-                    <div className="productActivestate" >
-                        <label className="switch">
-                            <input type="checkbox" checked={product.isActive}
-                                onChange={(e) => handleActive(e)}
-                            />
-                            <span className="slider round"></span>
-                        </label>
-
-                    </div>
+                    <p className="productScreenproductName">
+                        Rs{" "}{product?.cost_price}
+                    </p>
                 </td>
                 <td>
-                    {user ? user.currency ? user.currency : 'Rs. ' : 'Rs. '}  {formatNum(product.discountPrice ? product.discountPrice : product.price)}
+                    <p className="productScreenproductName">
+                        Rs{" "}{product?.selling_price}
+                    </p>
+                </td>
+                <td>
+                    <p className="productScreenproductName">
+                        Rs{" "}{product?.discount_price}
+                    </p>
                 </td>
                 <td className="tblActionCell">
                     <Dropdown
@@ -146,14 +116,6 @@ const ListItem = ({ product, user, handleEdit, index, activePage, toggleItem, se
                                 </span>
                                 <span>
                                     Edit
-                                </span>
-                            </Dropdown.Item>
-                            <Dropdown.Item onClick={(e) => shareProduct(e)}>
-                                <span>
-                                    <i className="shareIcon"></i>
-                                </span>
-                                <span>
-                                    Share
                                 </span>
                             </Dropdown.Item>
                             <Dropdown.Item onClick={(e) => {

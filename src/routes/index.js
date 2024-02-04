@@ -1,4 +1,3 @@
-import EditBusinessDetails from "../components/container/EditBusinessDetails";
 import AddBusinessDetails from "../components/container/AddBusinessDetails";
 import VerificationScreen from "../components/container/VerificationScreen";
 import {
@@ -48,10 +47,6 @@ const Routes = () => {
             <Route path="/EditProduct" component={EditProduct} />
             <Route path="/AllCategories" component={AllCategories} />
             <Route path="/EditCategory" component={EditCategory} />
-            <Route
-              path="/EditBusinessDetails"
-              component={EditBusinessDetails}
-            />
             <Route path="/AddBulkProducts" component={AddBulkProducts} />
             <Route path="/ViewOrders" component={ViewOrders} />
             <Route path="/OrderDetails/:order_id" component={OrderDetails} />

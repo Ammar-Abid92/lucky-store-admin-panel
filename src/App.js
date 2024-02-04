@@ -39,17 +39,20 @@ function App({ user, dispatch }) {
   //   });
   // }, []);
 
-  const timeInMilliseconds = 1800000;    // 30 mins
-  setTimeout(() => {
-    const user = JSON.parse(localStorage.getItem('userConfirmation'));
-    if (user) {
-      localStorage.removeItem('userConfirmation');
-    }
-  }, timeInMilliseconds);
+  const timeInMilliseconds = 1800000;    // -----> 30 mins
+  const checkValidUser = () => {
+    setTimeout(() => {
+      const user = JSON.parse(localStorage.getItem('userConfirmation'));
+      if (user) {
+        localStorage.removeItem('userConfirmation');
+      }
+    }, timeInMilliseconds);
+  }
 
   useEffect(() => {
-    console.log('useEffect() called!')
-  }, [setTimeout]);
+    console.log('useEffect() called!');
+    checkValidUser();
+  }, [checkValidUser]);
 
   return (
     <Routes />

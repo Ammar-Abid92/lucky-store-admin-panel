@@ -2,6 +2,7 @@
   float: left;
   width: 100%;
 }
+
 .productScreenInnerCont {
   float: left;
   display: flex;
@@ -11,9 +12,11 @@
   width: 100%;
   margin: 25px 0;
 }
+
 .productScreenInnerCont:hover {
   /* cursor: pointer; */
 }
+
 /* .productScreenInnerCont .productOptions {
     position: absolute;
     left: 0;
@@ -41,19 +44,23 @@
   justify-content: center;
   align-items: center;
 }
-.productOptions li a {
-}
+
+.productOptions li a {}
+
 .productOptions li a:hover {
   cursor: pointer;
 }
+
 .productDetailHoverOption {
   width: 100%;
 }
+
 .productScreenInnerCont:hover .productOptions {
   top: 100px;
   visibility: visible;
   /* display: block; */
 }
+
 .productScreenInnerCont .productOptions {
   position: absolute;
   left: 15px;
@@ -72,6 +79,7 @@
   opacity: 1;
   z-index: 99;
 }
+
 .shareIcon {
   background: url("../../../assets/icons/Share_Gray.svg");
   background-size: cover;
@@ -82,6 +90,7 @@
   top: 0px;
   position: relative;
 }
+
 .editIcon {
   background: url("../../../assets/icons/Edit_2_Gray.svg");
   background-size: cover;
@@ -92,6 +101,7 @@
   top: 0px;
   position: relative;
 }
+
 .deleteIcon {
   background: url("../../../assets/icons/Delete.svg");
   background-size: cover;
@@ -102,6 +112,7 @@
   top: 0px;
   position: relative;
 }
+
 .moreIcon {
   background: url("../../../assets/icons/3Dots_Green.svg");
   background-size: cover;
@@ -112,6 +123,7 @@
   top: 0px;
   position: relative;
 }
+
 /* .prdImageBox{
     max-width: 270px;
     width: 100%;
@@ -121,9 +133,11 @@
     height: 180px;
     border: 2px solid #eee; */
 }
+
 .productScreenInnerCont:hover .prdImageBox {
   /* opacity: 0.1; */
 }
+
 .prdImageBox img {
   width: 45px;
   height: 45px;
@@ -131,6 +145,7 @@
   border-radius: 50%;
   border: 2px solid #eee;
 }
+
 /* .content-overlay {
     background: rgba(0,0,0,0.4);
     position: absolute;
@@ -161,6 +176,7 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
 .productScreenLowStock {
   color: var(--red);
   font-size: 0.8rem;
@@ -175,6 +191,7 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
 .productScreenproductPrice {
   color: #555;
   font-size: 0.95rem;
@@ -182,11 +199,13 @@
   margin-bottom: 5px;
   padding: 0 5px;
 }
+
 .productDetailLowerContent {
   float: left;
   width: 100%;
   margin: 15px 0 5px;
 }
+
 .productDetailLowerContent:hover {
   cursor: pointer;
 }
@@ -230,16 +249,16 @@
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.35);
 }
 
-input:checked + .slider {
+input:checked+.slider {
   background-color: var(--brightGreen);
   box-shadow: 0 0px 3px rgba(0, 0, 0, 0.25);
 }
 
-input:focus + .slider {
+input:focus+.slider {
   box-shadow: 0 0 1px var(--brightGreen);
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);
@@ -253,69 +272,83 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
-.productActivestate {
-}
+
+.productActivestate {}
+
 .viewOrderTable.productViewtbl thead tr th:nth-child(1),
 .viewOrderTable.productViewtbl tbody tr td:nth-child(1) {
   width: 5% !important;
   text-align: center;
 }
+
 .viewOrderTable.productViewtbl thead tr th:nth-child(2),
 .viewOrderTable.productViewtbl tbody tr td:nth-child(2) {
   width: 8%;
   text-align: center;
 }
+
 .productScreenproductName {
   color: var(--mainColor) !important;
   text-align: left;
 }
+
 .viewOrderTable.productViewtbl thead tr th:nth-child(3),
 .viewOrderTable.productViewtbl tbody tr td:nth-child(3) {
   width: 20%;
   text-align: left;
 }
+
 .viewOrderTable.productViewtbl thead tr th:nth-child(4),
 .viewOrderTable.productViewtbl tbody tr td:nth-child(4) {
   width: 14%;
   text-align: left;
 }
+
 .viewOrderTable.productViewtbl thead tr th:nth-child(5),
 .viewOrderTable.productViewtbl tbody tr td:nth-child(5) {
   width: 12%;
   text-align: left;
 }
+
 .viewOrderTable.productViewtbl thead tr th:nth-child(6),
 .viewOrderTable.productViewtbl tbody tr td:nth-child(6) {
   width: 13%;
   text-align: left;
 }
+
 .viewOrderTable.productViewtbl thead tr th:nth-child(7),
 .viewOrderTable.productViewtbl tbody tr td:nth-child(7) {
   width: 8%;
   text-align: center;
 }
+
 .viewOrderTable.productViewtbl thead tr th:nth-child(8),
 .viewOrderTable.productViewtbl tbody tr td:nth-child(8) {
   width: 15%;
-  text-align: right;
+  text-align: left;
 }
+
 .viewOrderTable.productViewtbl thead tr th:nth-child(9),
 .viewOrderTable.productViewtbl tbody tr td:nth-child(9) {
   width: 5%;
   text-align: right;
 }
+
 .tblActionCell .dropdown .dropdown-toggle::after {
   display: none;
 }
+
 .tblActionCell .dropdown button,
 .tblActionCell .show.dropdown button {
   padding: 0;
   background: transparent;
   border: none;
 }
+
 .tblActionCell .dropdown-menu {
   left: -137px !important;
 }
+
 .tblActionCell .dropdown-menu a {
   display: flex;
   flex-direction: row;
@@ -323,26 +356,30 @@ input:checked + .slider:before {
   align-items: center;
   padding: 10px 15px 10px 20px;
 }
-.tblActionCell .dropdown-menu a span:nth-child(1) {
-}
+
+.tblActionCell .dropdown-menu a span:nth-child(1) {}
+
 .tblActionCell .dropdown-menu a span {
   font-size: 1rem;
   font-weight: 300;
 }
+
 .table-fixed {
   /* text-align: left;
     position: relative;
     border-collapse: collapse;  */
 }
+
 .table-fixed.productViewtbl th {
   background: #fff !important;
   border: 1px solid #b3b3b3 !important;
-  border-top: none !important ;
+  border-top: none !important;
   border-left: none !important;
   border-right: none !important;
   background: white;
   position: sticky;
-  top: 60px; /* Don't forget this, required for the stickiness */
+  top: 60px;
+  /* Don't forget this, required for the stickiness */
   box-shadow: 0px 1px 0 0px rgb(0, 0, 0, 0.15);
   z-index: 9;
 }
@@ -350,17 +387,20 @@ input:checked + .slider:before {
 .table-fixed tbody tr:hover {
   /* cursor: pointer; */
 }
+
 .productListingDiscount {
   display: block;
   color: var(--mustardYellowShade);
   font-size: 0.9rem;
 }
+
 .showMoreButton {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
 }
+
 .showMoreButton .login_btn_next {
   margin: 20px 0;
 }
@@ -369,6 +409,7 @@ input:checked + .slider:before {
   display: flex;
   justify-content: flex-end;
 }
+
 .addItemBtn {
   float: right;
   width: 100%;
@@ -377,6 +418,7 @@ input:checked + .slider:before {
   justify-content: flex-end;
   align-items: center;
 }
+
 .addItemBtn button.login_btn_next,
 .addItemBtn button.appBorderBtn {
   margin: 0 0 0 15px;

@@ -1,14 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { formatNum } from "../../../oscar-pos-core/constants";
+import useGetCollectionData from "../../../hooks/getData";
 
-const ListItem = ({ order, history, index, user, activePage, allOrders }) => {
+const ListItem = ({ order, history, index, activePage, allOrders }) => {
+  const [customerName, setCustomerName] = useState("");
+
+  const customers = useGetCollectionData('customers');
+
   const calculateTotalBill = () => {
-    if (order.order.total_bill) {
-      return order.order.total_bill;
+    if (order.order_total) {
+      return order.order_total;
     } else {
       let total_bill = 0;
-      for (let prod of order.order.products) {
-        total_bill += prod.price;
+      for (let i = 0; i < order?.products?.length; i++) {
+        total_bill += order?.products[i]?.price
       }
       return total_bill;
     }
@@ -36,12 +41,20 @@ const ListItem = ({ order, history, index, user, activePage, allOrders }) => {
     }
   };
 
+  useEffect(() => {
+    if (customers?.length > 0) {
+      customers?.forEach((cust) => {
+        if (cust?.id === order?.ordered_by) setCustomerName(cust?.name);
+      })
+    }
+  }, [customers]);
+
   return (
     <tr
       className="text-center align-middle"
       onClick={() =>
         history.push({
-          pathname: "/OrderDetails/" + order._id,
+          pathname: "/OrderDetails/" + order.id,
           state: {
             orders: allOrders
           }
@@ -49,18 +62,17 @@ const ListItem = ({ order, history, index, user, activePage, allOrders }) => {
       }
     >
       <td scope="row">{(activePage - 1) * 10 + (index + 1)}</td>
-      <td>{order.name.slice(8)}</td>
+      <td>{order.name}</td>
       <td>
-        {order.customer && (
+        {order.ordered_by && (
           <p className="productScreenproductName marBot0">
-            {order.customer.name}
+            {customerName}
           </p>
         )}
       </td>
-      <td>{order.customer && order.customer.address}</td>
+      <td>{order?.delivery_address}</td>
       <td>
-        {user ? (user.currency ? user.currency : "Rs. ") : "Rs. "}{" "}
-        {formatNum(calculateTotalBill())}
+        Rs{" "}{formatNum(calculateTotalBill())}
       </td>
       <td>
         <span
@@ -68,7 +80,7 @@ const ListItem = ({ order, history, index, user, activePage, allOrders }) => {
             color: getColor(),
           }}
         >
-          {order.status}
+          {order.order_status}
         </span>
       </td>
       <td className="tblAction">
@@ -78,7 +90,7 @@ const ListItem = ({ order, history, index, user, activePage, allOrders }) => {
             e.preventDefault();
             e.stopPropagation();
             history.push({
-              pathname: "/OrderDetails/" + order._id,
+              pathname: "/OrderDetails/" + order.id,
               state: {
                 orders: allOrders
               }

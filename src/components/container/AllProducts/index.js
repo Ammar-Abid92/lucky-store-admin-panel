@@ -17,12 +17,12 @@ import {
   addBulkProductsFromCSV,
   getDukaanProductFromCloud,
 } from "../../../oscar-pos-core/actions";
+import useGetCollectionData from "../../../hooks/getData";
 
-const AllProducts = ({ history, user, products, location }) => {
-
+const AllProducts = ({ history, location, products }) => {
   const [selected, setSelected] = useState("AllProducts");
   const [bulkProducts, setBulkProducts] = useState([]);
-  const [allProducts, setAllProducts] = useState([]);
+  // const [allProducts, setAllProducts] = useState([]);
   const [editItems, setEditItems] = useState(false);
   const [toggleItem, setToggleItem] = useState("");
   const [totalItems, setTotalItems] = useState(0);
@@ -39,6 +39,8 @@ const AllProducts = ({ history, user, products, location }) => {
   const [open, setOpen] = useState(false);
   const [id, setId] = useState("");
 
+  const allProducts = useGetCollectionData('items');
+
   const keys = [
     "Image",
     "Name",
@@ -47,53 +49,59 @@ const AllProducts = ({ history, user, products, location }) => {
     "Cost Price",
     "Unit",
     "Category",
-    "Stock",
+    "Quantity",
     "Weight",
     "",
   ];
 
-  const getProducts = useCallback(async () => {
-    if (search === "") {
-      getDukaanProductFromCloud(user.vanity_url, BASE_URL, {
-        pageNumber: activePage,
-      })
-        .then((res) => {
-          setTotalItems(res.data.data.total);
-          setNumOfPages(Math.ceil(res.data.data.total / 10));
-          setLoading(false);
-        })
-        .catch((err) => {
-          setLoading(false);
-        });
-    } else {
-      let url = `${BASE_URL}api/toko/v3/merchant/${user.vanity_url
-        }/products?page_number=${activePage}&page_size=${10}&name=${search}`;
-
-      axios
-        .get(url, {
-          headers: {
-            Authorization: "JWT " + Cookies.get("token"),
-            "Content-Type": "application/json",
-          },
-        })
-        .then((res) => {
-          setNumOfPages(Math.ceil(res.data.data.total / 10));
-          setAllProducts(res.data.data.results);
-        });
+  useEffect(() => {
+    if (allProducts?.length > 0) {
+      setLoading(false);
     }
-  }, [activePage, search, user.vanity_url]);
+  }, [allProducts]);
 
-  useEffect(() => {
-    getProducts();
-  }, [getProducts]);
+  // const getProducts = useCallback(async () => {
+  //   if (search === "") {
+  //     getDukaanProductFromCloud(BASE_URL, {
+  //       pageNumber: activePage,
+  //     })
+  //       .then((res) => {
+  //         setTotalItems(res.data.data.total);
+  //         setNumOfPages(Math.ceil(res.data.data.total / 10));
+  //         setLoading(false);
+  //       })
+  //       .catch((err) => {
+  //         setLoading(false);
+  //       });
+  //   } else {
+  //     // let url = `${BASE_URL}api/toko/v3/merchant/${user.vanity_url
+  //     //   }/products?page_number=${activePage}&page_size=${10}&name=${search}`;
 
-  useEffect(() => {
-    setAllProducts(products);
-  }, [products]);
+  //     axios
+  //       .get(url, {
+  //         headers: {
+  //           Authorization: "JWT " + Cookies.get("token"),
+  //           "Content-Type": "application/json",
+  //         },
+  //       })
+  //       .then((res) => {
+  //         setNumOfPages(Math.ceil(res.data.data.total / 10));
+  //         setAllProducts(res.data.data.results);
+  //       });
+  //   }
+  // }, [activePage, search]);
+
+  // useEffect(() => {
+  //   getProducts();
+  // }, [getProducts]);
+
+  // useEffect(() => {
+  //   setAllProducts(products);
+  // }, [products]);
 
   const clearSearch = () => {
     setSearch("");
-    setAllProducts(products);
+    // setAllProducts(products);
     setActivePage(1);
   };
 
@@ -112,13 +120,6 @@ const AllProducts = ({ history, user, products, location }) => {
     });
   };
 
-  const handleCatalog = () => {
-    setCatalog(true);
-    setTimeout(() => {
-      setToggle(true);
-    });
-  };
-
   const handleEdit = (e, productId) => {
     e.stopPropagation();
     e.preventDefault();
@@ -130,13 +131,13 @@ const AllProducts = ({ history, user, products, location }) => {
     }, 100);
   };
 
-  const handleLoadMore = (isMore) => {
-    if (isMore) {
-      setAllProducts(products);
-    } else {
-      setAllProducts(products.slice(0, 5));
-    }
-  };
+  // const handleLoadMore = (isMore) => {
+  //   if (isMore) {
+  //     setAllProducts(products);
+  //   } else {
+  //     setAllProducts(products.slice(0, 5));
+  //   }
+  // };
 
   const validateInput = () => {
     setLoading(true);
@@ -233,38 +234,34 @@ const AllProducts = ({ history, user, products, location }) => {
           : parseFloat(x.costPrice),
         stock: parseInt(x.stock),
         weight: parseFloat(x.weight || 0),
-        variants: {
-          color: [],
-          sizes: [],
-        },
       };
     });
     let params = {
-      phone_number: user.phone_number,
+      // phone_number: user.phone_number,
       products: myArr,
     };
     return params;
   };
 
-  const handleUploadCSVItems = () => {
-    if (validateInput() == false) {
-      setLoading(false);
-      return;
-    } else {
-      let processedData = getProcessedDataOfCSV();
+  // const handleUploadCSVItems = () => {
+  //   if (validateInput() == false) {
+  //     setLoading(false);
+  //     return;
+  //   } else {
+  //     let processedData = getProcessedDataOfCSV();
 
-      addBulkProductsFromCSV(processedData, user.vanity_url, BASE_URL)
-        .then((res) => {
-          setBulkProducts([]);
-          getProducts();
-          setErrors({});
-        })
-        .catch((err) => {
-          setLoading(false);
-          console.log("catch", err);
-        });
-    }
-  };
+  //     addBulkProductsFromCSV(processedData, BASE_URL)
+  //       .then((res) => {
+  //         setBulkProducts([]);
+  //         getProducts();
+  //         setErrors({});
+  //       })
+  //       .catch((err) => {
+  //         setLoading(false);
+  //         console.log("catch", err);
+  //       });
+  //   }
+  // };
 
   const addNewProductToArrayCSV = () => {
     let arr = bulkProducts;
@@ -283,6 +280,7 @@ const AllProducts = ({ history, user, products, location }) => {
     arr.push(obj);
     setBulkProducts([...arr]);
   };
+
   const handleChange = (event, value) => {
     setActivePage(value);
   };
@@ -309,7 +307,7 @@ const AllProducts = ({ history, user, products, location }) => {
             <div className={"col-sm-10"}>
               <div className="RightSectionMain">
                 <div className="viewFirstHeading">
-                  <h1>All Items</h1>
+                  <h1 style={{ marginBottom: '10px' }}>All Items</h1>
                 </div>
                 {loading == true ? (
                   <div className="spinnerContainer">
@@ -352,7 +350,7 @@ const AllProducts = ({ history, user, products, location }) => {
                                     error={errors}
                                     index={index}
                                     data={entry}
-                                    user={user}
+                                  // user={user}
                                   />
                                 );
                               })}
@@ -383,7 +381,7 @@ const AllProducts = ({ history, user, products, location }) => {
                       <button
                         className="btn btn-primary login_btn_next"
                         disabled={loading}
-                        onClick={() => handleUploadCSVItems()}
+                      // onClick={() => handleUploadCSVItems()}
                       >
                         {loading ? (
                           <Spinner
@@ -397,189 +395,85 @@ const AllProducts = ({ history, user, products, location }) => {
                       </button>
                     </div>
                   </div>
-                ) : products.length > 0 ? (
-                  <div className="productScreenMainCont">
-                    <div className="viewsTopActionSection">
-                      <div className="row">
-                        <div className="col-sm-4">
-                          <div className="form-group searchBartop">
-                            <input
-                              type="search"
-                              value={search}
-                              className="form-control"
-                              placeholder={`${totalItems} Items (Search Items by name)`}
-                              aria-label="Search"
-                              aria-describedby="search-addon"
-                              onChange={onSearchChange}
-                            />
-                            {search.length ? (
-                              <span
-                                className="textStyling closeBtnStyling pointerCursor"
-                                onClick={clearSearch}
-                              >
-                                <svg
-                                  fill="var(--mediumGray)"
-                                  height="18"
-                                  width="18"
-                                  viewBox="0 0 30 30"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                >
-                                  <path
-                                    fill=""
-                                    d="M17.555,15.438l9.293-9.293c0.232-0.233,0.36-0.542,0.36-0.871c0-0.329-0.128-0.639-0.36-0.871
-                                                                c-0.466-0.465-1.277-0.465-1.742,0l-9.293,9.292L6.521,4.402c-0.465-0.464-1.277-0.465-1.743,0c-0.233,0.232-0.36,0.542-0.36,0.871
-                                                                c0,0.329,0.127,0.638,0.36,0.871l9.293,9.292L4.777,24.73c-0.48,0.479-0.48,1.262,0,1.742c0.464,0.466,1.276,0.466,1.743,0
-                                                                l9.292-9.293l9.294,9.293c0.465,0.466,1.275,0.465,1.741,0c0.479-0.48,0.479-1.263,0-1.742L17.555,15.438z"
-                                  />
-                                </svg>
-                              </span>
-                            ) : null}
-                          </div>
-                        </div>
-
-                        <div className="col-sm-7 addItemBtnMain">
-                          <div className="addItemBtn">
-                            <button
-                              className="btn btn-primary login_btn_next"
-                              type="submit"
-                              onClick={handleAddItems}
-                            >
-                              Add an Item
-                            </button>
-                            <button
-                              className="btn btn-primary appBorderBtn"
-                              type="submit"
-                              onClick={handleCatalog}
-                            >
-                              Add from Catalog
-                            </button>
-                            <button
-                              className="btn btn-primary appBorderBtn"
-                              type="submit"
-                              onClick={handleCSV}
-                            >
-                              Import Items
-                            </button>
-                          </div>
-                        </div>
+                )
+                  : allProducts.length > 0 ? (
+                    <div className="newCardBox">
+                      <table className="table table-hover table-fixed table-bordered viewOrderTable productViewtbl">
+                        <thead>
+                          <tr>
+                            <th>Sr #</th>
+                            <th>&nbsp;</th>
+                            <th>Item Name</th>
+                            <th>Category</th>
+                            <th>Quantity</th>
+                            <th>Cost Price</th>
+                            <th>Selling Price</th>
+                            <th>Discounted Price</th>
+                            <th>&nbsp;</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {allProducts
+                            .sort((a, b) =>
+                              a.name < b.name ? -1 : a.name > b.name ? 1 : 0
+                            )
+                            .map((product, index) => {
+                              return (
+                                <ListItem
+                                  search={search}
+                                  product={product}
+                                  key={product.id}
+                                  handleEdit={handleEdit}
+                                  index={index}
+                                  activePage={activePage}
+                                  toggleItem={toggleItem}
+                                  setToggleItem={setToggleItem}
+                                />
+                              );
+                            })}
+                        </tbody>
+                      </table>
+                      <div className="paginationContainer">
+                        {numOfPages > 1 && (
+                          <Pagination
+                            count={numOfPages}
+                            shape="rounded"
+                            onChange={handleChange}
+                            color="secondary"
+                          />
+                        )}
                       </div>
                     </div>
-                    {search.length && !allProducts.length ? (
+                  )
+                    :
+                    (
                       <div className="placeHolderContMain">
                         <p>
                           <i className="productPlaceholderIcon"></i>
                         </p>
-                        <p>No Items found</p>
+                        <p>Add Your Item</p>
                         <p className="placeholderParagraph">
-                          You don't have any Item with that name
+                          Create Item with names, photos and prices to speed-up
+                          checkout.
                         </p>
-                      </div>
-                    ) : (
-                      <div className="newCardBox">
-                        <table className="table table-hover table-fixed table-bordered viewOrderTable productViewtbl">
-                          <thead>
-                            <tr>
-                              <th>Sr #</th>
-                              <th>&nbsp;</th>
-                              <th>Item Name</th>
-                              <th>Category</th>
-                              <th>Stock</th>
-                              <th>Units</th>
-                              <th>Active</th>
-                              <th>Price</th>
-                              <th>&nbsp;</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {allProducts
-                              .sort((a, b) =>
-                                a.name < b.name ? -1 : a.name > b.name ? 1 : 0
-                              )
-                              .map((product, index) => {
-                                return (
-                                  <ListItem
-                                    search={search}
-                                    product={product}
-                                    key={product._id}
-                                    user={user}
-                                    handleEdit={handleEdit}
-                                    index={index}
-                                    activePage={activePage}
-                                    toggleItem={toggleItem}
-                                    setToggleItem={setToggleItem}
-                                  />
-                                );
-                              })}
-                          </tbody>
-                        </table>
-                        <div className="paginationContainer">
-                          {numOfPages > 1 && (
-                            <Pagination
-                              count={numOfPages}
-                              shape="rounded"
-                              onChange={handleChange}
-                              color="secondary"
-                            />
-                          )}
+                        <div className="placeholderButtonSection">
+                          <button
+                            className="btn btn-primary login_btn_next"
+                            type="submit"
+                            onClick={handleAddItems}
+                          >
+                            Add an Item
+                          </button>
+                          <button
+                            className="btn btn-primary login_btn_next"
+                            type="submit"
+                            onClick={handleCSV}
+                          >
+                            Import Items
+                          </button>
                         </div>
                       </div>
                     )}
-
-                    {/* {products.length > 5 && allProducts.length ? (
-                      <div className="showMoreButton">
-                        <button
-                          className="login_btn_next"
-                          onClick={() =>
-                            handleLoadMore(
-                              allProducts.length === products.length
-                                ? false
-                                : true
-                            )
-                          }
-                        >
-                          {allProducts.length === products.length
-                            ? "show less"
-                            : "show more"}
-                        </button>
-                      </div>
-                    ) : null} */}
-                  </div>
-                ) : (
-                  <div className="placeHolderContMain">
-                    <p>
-                      <i className="productPlaceholderIcon"></i>
-                    </p>
-                    <p>Add Your Item</p>
-                    <p className="placeholderParagraph">
-                      Create Item with names, photos and prices to speed-up
-                      checkout. <a href="">Download our template</a> to create
-                      and update your items with import.
-                    </p>
-                    <div className="placeholderButtonSection">
-                      <button
-                        className="btn btn-primary login_btn_next"
-                        type="submit"
-                        onClick={handleAddItems}
-                      >
-                        Add an Item
-                      </button>
-                      <button
-                        className="btn btn-primary login_btn_next"
-                        type="submit"
-                        onClick={handleCSV}
-                      >
-                        Import Items
-                      </button>
-                      <button
-                        className="btn btn-primary login_btn_next"
-                        type="submit"
-                        onClick={handleCatalog}
-                      >
-                        Add from Catalog
-                      </button>
-                    </div>
-                  </div>
-                )}
               </div>
             </div>
           </div>
@@ -641,7 +535,7 @@ const AllProducts = ({ history, user, products, location }) => {
 
 export default connect((state) => {
   return {
-    user: state.user,
+    // user: state.user,
     products: state.products,
   };
 })(AllProducts);

@@ -87,18 +87,6 @@ const DashboardAction = ({ history, toggleExpanded, currentSelection }) => {
                                 </NavText>
                             </NavItem>
 
-
-                            <NavItem title="Account" className={currentSelection == 'EditBusinessDetails' ? "active" : null} onClick={() => history.push('/EditBusinessDetails')} eventKey="EditBusinessDetails">
-                                <NavIcon>
-                                    <span>
-                                        <i className="navAccountIcon"></i>
-                                    </span>
-                                </NavIcon>
-                                <NavText>
-                                    Account
-                                </NavText>
-                            </NavItem>
-
                             <NavItem title="Logout" onClick={() => {
                                 localStorage.removeItem('userConfirmation');
                                 window.location.reload();
