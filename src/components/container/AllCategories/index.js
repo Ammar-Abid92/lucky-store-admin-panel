@@ -26,6 +26,7 @@ const AllCategories = ({ history, location }) => {
   const [activePage, setActivePage] = useState(1)
   const [totalItems, setTotalItems] = useState(0)
 
+  const allCategories = useGetCollectionData('categories');
 
   const handleAddCategory = () => {
     setAddCategory(true);
@@ -45,13 +46,13 @@ const AllCategories = ({ history, location }) => {
     setActivePage(value);
   };
 
-  const onSearchChange = (e) => {
-    setActivePage(1)
-    let text = e.target.value;
-    setSearch(text);
+  const onSearchChange = (val) => {
+    if (allCategories.length) {
+      let res = allCategories.filter(x => x.name.toLowerCase().includes(val.toLowerCase()))
+      setSearch(res)
+    }
   }
 
-  const allCategories = useGetCollectionData('categories');
 
   useEffect(() => {
     if (allCategories?.length > 0) {
@@ -96,12 +97,11 @@ const AllCategories = ({ history, location }) => {
                           <div className="form-group searchBartop">
                             <input
                               type="search"
-                              value={search}
                               className="form-control"
-                              placeholder={`${totalItems} Categoris (Search Categories by name)`}
+                              placeholder={`${allCategories.length} Categoris (Search Categories by name)`}
                               aria-label="Search"
                               aria-describedby="search-addon"
-                              onChange={onSearchChange}
+                              onChange={(e) => onSearchChange(e.target.value)}
                             />
                           </div>
                         </div>
@@ -128,7 +128,7 @@ const AllCategories = ({ history, location }) => {
                           </tr>
                         </thead>
                         <tbody>
-                          {allCategories
+                          { (search.length ? search : allCategories)
                             .sort((a, b) =>
                               a.name < b.name ? -1 : a.name > b.name ? 1 : 0
                             )

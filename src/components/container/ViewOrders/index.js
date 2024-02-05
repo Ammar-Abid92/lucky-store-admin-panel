@@ -40,6 +40,9 @@ var FILTER = [
 ];
 
 const ViewOrders = ({ user, orders, history, location }) => {
+
+  const allOrders = useGetCollectionData('orders');
+
   const [selected, setSelected] = useState('ViewOrders');
   const [selectedFilter, setSelFilter] = useState('All');
   const [activePage, setActivePage] = useState(1);
@@ -47,114 +50,29 @@ const ViewOrders = ({ user, orders, history, location }) => {
   const [totalItems, setTotalItems] = useState(0);
   const [expanded, setExpanded] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState('');
-
-  // const getOrders = useCallback(() => {
-  //   if (search === '') {
-  //     Promise.all([
-  //       getDukaanOrdersFromCloud(BASE_URL, {
-  //         page_number: activePage,
-  //       }),
-  //     ])
-  //       .then((res) => {
-  //         console.log(res, 'orders');
-  //         SortDefaultOrders(res[0].results).then((ord) => {
-  //           console.log(ord);
-  //           setNumOfPages(Math.ceil(res[0].total / 10));
-  //           setTotalItems(res[0].total);
-  //           setAllOrders(ord);
-  //         });
-  //         setLoading(false);
-  //       })
-  //       .catch((err) => {
-  //         console.log('err getting orders from cloud', err);
-  //         setLoading(false);
-  //       });
-  //   } else {
-  //     let url = `${BASE_URL}api/toko/v3/orders?name=${search}&page_size=10&page_number=${activePage}`;
-
-  //     console.log('Url', url);
-
-  //     axios
-  //       .get(url, {
-  //         headers: {
-  //           'Authorization': 'JWT ' + Cookies.get('token'),
-  //           'Content-Type': 'application/json'
-  //         }
-  //       }).then((res) => {
-  //         console.log(res.data.data)
-  //         setAllOrders(res.data.data.results)
-  //         setNumOfPages(Math.ceil(res.data.data.total / 10))
-  //       }).catch((e) => console.log(e))
-
-  //   }
-  // }, [activePage, search]);
-
-  // useEffect(() => {
-  //   getOrders();
-  // }, [getOrders]);
-
-  // const SortDefaultOrders = (data) => {
-  //   let pendingOrders,
-  //     acceptedOrders,
-  //     outForDeliveryOrders,
-  //     deliveredOrders,
-  //     decline,
-  //     allOrders = '';
-  //   data.sort((a, b) => {
-  //     var dateA = new Date(a.created),
-  //       dateB = new Date(b.created);
-  //     return dateB - dateA;
-  //   });
-
-  //   return new Promise((res, rej) => {
-  //     pendingOrders = data.filter((item) => item.status === 'pending');
-  //     acceptedOrders = data.filter((item) => item.status === 'accepted');
-  //     outForDeliveryOrders = data.filter((item) => item.status === 'shipped');
-  //     deliveredOrders = data.filter((item) => item.status === 'delivered');
-  //     decline = data.filter((item) => item.status === 'declined');
-  //     allOrders = pendingOrders.concat(acceptedOrders).concat(outForDeliveryOrders).concat(deliveredOrders).concat(decline);
-  //     res(allOrders);
-  //   });
-  // };
-
-  const clearSearch = () => {
-    if (selectedFilter === 'All') {
-      // setAllOrders(orders);
-    }
-    setSearch('');
-  };
-
-  const handleSearch = (text) => {
-    analytics.logEvent('order_search');
-    setActivePage(1);
-    setSearch(text);
-  };
+  const [search, setSearch] = useState(allOrders);
 
   const changeFilter = (type) => {
     setSelFilter(type);
 
     if (type !== 'All') {
-      let searchOrder = orders.filter((item) => item.status.includes(type.toLocaleLowerCase()));
-      // setAllOrders(searchOrder);
-    } else {
-      // setAllOrders(orders);
-    }
+      let filtered = allOrders.filter((each) => each.order_status == type.toLowerCase());
+      console.log("HERE-------->",type, filtered)
+      setSearch(filtered)
+    } 
   };
-
-  // const handleLoadMore = (isMore) => {
-  //   if (isMore) {
-  //     SortDefaultOrders(orders).then((res) => setAllOrders(res));
-  //   } else {
-  //     SortDefaultOrders(orders).then((res) => setAllOrders(res.slice(0, 5)));
-  //   }
-  // };
 
   const handleChange = (event, value) => {
     setActivePage(value);
   };
 
-  const allOrders = useGetCollectionData('orders');
+
+  const handleSearch = (val) => {
+    if (allOrders.length) {
+      let res = allOrders.filter(x => x.name.toLowerCase().includes(val.toLowerCase()))
+      setSearch(res)
+    }
+  }
 
   useEffect(() => {
     if (allOrders?.length > 0) setLoading(false);
@@ -177,15 +95,15 @@ const ViewOrders = ({ user, orders, history, location }) => {
                     <Spinner className='loaderCircle ProductsList' animation='border' role='status'></Spinner>
                   </div>
                 ) :
-                  allOrders.length > 0 ? (
+                   allOrders.length > 0 ? (
                     <>
                       <div className='viewsTopActionSection'>
                         <div className='row'>
                           <div className='viewsTopSection'>
                             <div className='col-sm-4'>
                               <div className='form-group searchBartop'>
-                                <input type='search' value={search} className='form-control' placeholder={`${totalItems} Orders (Search Orders by ID)`} aria-label='Search' aria-describedby='search-addon' onChange={(e) => handleSearch(e.target.value)} />
-                                {search.length ? (
+                                <input type='search' className='form-control' placeholder={`${allOrders.length} Orders (Search Orders by ID)`} aria-label='Search' aria-describedby='search-addon' onChange={(e) => handleSearch(e.target.value)} />
+                                {/* {search.length ? (
                                   <span className='textStyling closeBtnStyling pointerCursor' onClick={clearSearch}>
                                     <svg fill='var(--mediumGray)' height='18' width='18' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'>
                                       <path
@@ -197,7 +115,7 @@ const ViewOrders = ({ user, orders, history, location }) => {
                                       />
                                     </svg>
                                   </span>
-                                ) : null}
+                                ) : null} */}
                               </div>
                             </div>
                             <div className='selctCategoryMain statusFilter'>
@@ -236,13 +154,12 @@ const ViewOrders = ({ user, orders, history, location }) => {
                           </thead>
                           <tbody>
                             {allOrders.length
-                              ? allOrders.map((order, index) => {
+                              ? (search.length ? search : allOrders ).map((order, index) => {
                                 return <ListItem key={order.id} order={order} index={index} activePage={activePage} history={history} allOrders={allOrders} />;
                               })
                               : null}
                           </tbody>
                         </table>
-                        <div className='paginationContainer'>{numOfPages > 1 && <Pagination count={numOfPages} shape='rounded' onChange={handleChange} color='secondary' />}</div>
                       </div>
                     </>
                   ) : (

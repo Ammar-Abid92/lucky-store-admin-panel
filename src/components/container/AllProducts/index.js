@@ -63,6 +63,13 @@ const AllProducts = ({ history, location, products }) => {
     }
   }, [allProducts]);
 
+  const handleSearch = (val) => {
+    if (allProducts.length) {
+      let res = allProducts.filter(x => x.name.toLowerCase().includes(val.toLowerCase()))
+      setSearch(res)
+    }
+  }
+
   // const getProducts = useCallback(async () => {
   //   if (search === "") {
   //     getDukaanProductFromCloud(BASE_URL, {
@@ -408,35 +415,13 @@ const AllProducts = ({ history, location, products }) => {
                               <div className="form-group searchBartop">
                                 <input
                                   type="search"
-                                  value={search}
                                   className="form-control"
-                                  placeholder={`${totalItems} Items (Search Items by name)`}
+                                  placeholder={`${allProducts.length} Items (Search Items by name)`}
                                   aria-label="Search"
                                   aria-describedby="search-addon"
-                                  onChange={onSearchChange}
+                                  onChange={(e) => handleSearch(e.target.value)}
                                 />
-                                {search.length ? (
-                                  <span
-                                    className="textStyling closeBtnStyling pointerCursor"
-                                    onClick={clearSearch}
-                                  >
-                                    <svg
-                                      fill="var(--mediumGray)"
-                                      height="18"
-                                      width="18"
-                                      viewBox="0 0 30 30"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                      <path
-                                        fill=""
-                                        d="M17.555,15.438l9.293-9.293c0.232-0.233,0.36-0.542,0.36-0.871c0-0.329-0.128-0.639-0.36-0.871
-                                                                c-0.466-0.465-1.277-0.465-1.742,0l-9.293,9.292L6.521,4.402c-0.465-0.464-1.277-0.465-1.743,0c-0.233,0.232-0.36,0.542-0.36,0.871
-                                                                c0,0.329,0.127,0.638,0.36,0.871l9.293,9.292L4.777,24.73c-0.48,0.479-0.48,1.262,0,1.742c0.464,0.466,1.276,0.466,1.743,0
-                                                                l9.292-9.293l9.294,9.293c0.465,0.466,1.275,0.465,1.741,0c0.479-0.48,0.479-1.263,0-1.742L17.555,15.438z"
-                                      />
-                                    </svg>
-                                  </span>
-                                ) : null}
+
                               </div>
                             </div>
 
@@ -478,7 +463,7 @@ const AllProducts = ({ history, location, products }) => {
                             </tr>
                           </thead>
                           <tbody>
-                            {allProducts
+                            { (search.length ? search : allProducts)
                               .sort((a, b) =>
                                 a.name < b.name ? -1 : a.name > b.name ? 1 : 0
                               )
