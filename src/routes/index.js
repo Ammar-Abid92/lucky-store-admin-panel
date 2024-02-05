@@ -1,5 +1,4 @@
 import AddBusinessDetails from "../components/container/AddBusinessDetails";
-import VerificationScreen from "../components/container/VerificationScreen";
 import {
   BrowserRouter as Router,
   Switch,
@@ -33,7 +32,6 @@ const Routes = () => {
           <Switch>
             <Route path="/" exact component={Login} />
             <Route path="/Login" component={Login} />
-            <Route path="/VerificationScreen" component={VerificationScreen} />
             <Route path="/AddBusinessDetails" component={AddBusinessDetails} />
             <Redirect to="/" />
           </Switch>
