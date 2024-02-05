@@ -39,15 +39,13 @@ var FILTER = [
   },
 ];
 
-const ViewOrders = ({ user, orders, history, location }) => {
+const ViewOrders = ({ history, location }) => {
 
   const allOrders = useGetCollectionData('orders');
 
   const [selected, setSelected] = useState('ViewOrders');
   const [selectedFilter, setSelFilter] = useState('All');
   const [activePage, setActivePage] = useState(1);
-  const [numOfPages, setNumOfPages] = useState(1);
-  const [totalItems, setTotalItems] = useState(0);
   const [expanded, setExpanded] = useState(false);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState(allOrders);
@@ -57,9 +55,8 @@ const ViewOrders = ({ user, orders, history, location }) => {
 
     if (type !== 'All') {
       let filtered = allOrders.filter((each) => each.order_status == type.toLowerCase());
-      console.log("HERE-------->",type, filtered)
       setSearch(filtered)
-    } 
+    }
   };
 
   const handleChange = (event, value) => {
@@ -95,7 +92,7 @@ const ViewOrders = ({ user, orders, history, location }) => {
                     <Spinner className='loaderCircle ProductsList' animation='border' role='status'></Spinner>
                   </div>
                 ) :
-                   allOrders.length > 0 ? (
+                  allOrders.length > 0 ? (
                     <>
                       <div className='viewsTopActionSection'>
                         <div className='row'>
@@ -103,19 +100,6 @@ const ViewOrders = ({ user, orders, history, location }) => {
                             <div className='col-sm-4'>
                               <div className='form-group searchBartop'>
                                 <input type='search' className='form-control' placeholder={`${allOrders.length} Orders (Search Orders by ID)`} aria-label='Search' aria-describedby='search-addon' onChange={(e) => handleSearch(e.target.value)} />
-                                {/* {search.length ? (
-                                  <span className='textStyling closeBtnStyling pointerCursor' onClick={clearSearch}>
-                                    <svg fill='var(--mediumGray)' height='18' width='18' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'>
-                                      <path
-                                        fill=''
-                                        d='M17.555,15.438l9.293-9.293c0.232-0.233,0.36-0.542,0.36-0.871c0-0.329-0.128-0.639-0.36-0.871
-                                                                    c-0.466-0.465-1.277-0.465-1.742,0l-9.293,9.292L6.521,4.402c-0.465-0.464-1.277-0.465-1.743,0c-0.233,0.232-0.36,0.542-0.36,0.871
-                                                                    c0,0.329,0.127,0.638,0.36,0.871l9.293,9.292L4.777,24.73c-0.48,0.479-0.48,1.262,0,1.742c0.464,0.466,1.276,0.466,1.743,0
-                                                                    l9.292-9.293l9.294,9.293c0.465,0.466,1.275,0.465,1.741,0c0.479-0.48,0.479-1.263,0-1.742L17.555,15.438z'
-                                      />
-                                    </svg>
-                                  </span>
-                                ) : null} */}
                               </div>
                             </div>
                             <div className='selctCategoryMain statusFilter'>
@@ -154,7 +138,7 @@ const ViewOrders = ({ user, orders, history, location }) => {
                           </thead>
                           <tbody>
                             {allOrders.length
-                              ? (search.length ? search : allOrders ).map((order, index) => {
+                              ? (search.length ? search : allOrders).map((order, index) => {
                                 return <ListItem key={order.id} order={order} index={index} activePage={activePage} history={history} allOrders={allOrders} />;
                               })
                               : null}

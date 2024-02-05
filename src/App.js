@@ -1,61 +1,21 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-import axios from 'axios'
-import { BASE_URL } from './constants';
-import Cookies from 'js-cookie';
 import { connect, } from 'react-redux';
 import Routes from './routes';
 import './App.css';
-import { logout, updateUser } from './oscar-pos-core/actions';
 
-function App({ user, dispatch }) {
-  // const checkValidUser = useCallback(() => {
-  //   return new Promise((resolve, reject) => {
-  //     let url = `${BASE_URL}api/toko/checkauth/`;
-  //     // console.log('params for validateOtp:', );
-  //     axios
-  //       .get(url, {
-  //         headers: {
-  //           'Authorization': 'JWT ' + Cookies.get('token'),
-  //           'Content-Type': 'application/json'
-  //         }
-  //       })
-  //       .then((res) => {
-  //         console.log(res)
-  //         if (res.status === 200) {
-  //           dispatch(updateUser(res.data.user_info))
-  //           return resolve(res);
+function App() {
+  const timeInMillseconds = 24 * 60 * 60 * 1000;   // -----> 24 hrs
+  let user = JSON.parse(localStorage.getItem('userConfirmation'));
 
-  //         }
-  //         reject(res.statusText)
-
-  //       })
-  //       .catch((err) => {
-  //         console.log('validate otp code err: ', err);
-  //         logout()
-  //         reject(err);
-  //       });
-  //   });
-  // }, []);
-
-  const timeInMilliseconds = 1800000;    // -----> 30 mins
-  const checkValidUser = () => {
-    setTimeout(() => {
-      const user = JSON.parse(localStorage.getItem('userConfirmation'));
-      if (user) {
-        localStorage.removeItem('userConfirmation');
-      }
-    }, timeInMilliseconds);
-  }
-
-  useEffect(() => {
-    console.log('useEffect() called!');
-    checkValidUser();
-  }, [checkValidUser]);
+  setTimeout(() => {
+    if (user) {
+      localStorage.removeItem('userConfirmation');
+    }
+  }, timeInMillseconds);
 
   return (
-    <Routes />
+    <Routes user={user} />
   );
 }
 

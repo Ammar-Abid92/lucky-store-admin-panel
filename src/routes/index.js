@@ -21,10 +21,13 @@ import ViewOrders from "../components/container/ViewOrders";
 import Login from "../components/container/Login";
 import Home from "../components/container/Home";
 import { connect } from "react-redux";
-import React from "react";
+import React, { useEffect } from "react";
 
-const Routes = () => {
-  const user = JSON.parse(localStorage.getItem('userConfirmation'));
+const Routes = ({ user }) => {
+  useEffect(() => {
+    console.log('useEffect of routes component called!');
+  }, [user]);
+
   return (
     <Router>
       <>

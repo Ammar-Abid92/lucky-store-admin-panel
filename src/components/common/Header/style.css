@@ -23,12 +23,12 @@ header {
 }
 
 .headerLogo {
-  margin: 5px 25px;
+  margin: 8px 25px;
 }
 
 .headerLogo img {
   margin-left: -5px;
-  width: 80px;
+  width: 70px;
   height: auto;
 }
 
