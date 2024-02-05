@@ -429,9 +429,7 @@ const AddBulkProducts = ({
               Drag &#38; Drop to Upload CSV
             </p>
             <p className="placeholderParagraph">
-              Create item with names, photos and prices to speed-up checkout.{" "}
-              <a href={`${CSVFile}`}>Download our template</a> to create and
-              update your item with import.
+              Import items directly from CSV file to speed-up the checkout.
             </p>
             <div className="uploadFIleCont uploadCSVButton">
               <button className="">

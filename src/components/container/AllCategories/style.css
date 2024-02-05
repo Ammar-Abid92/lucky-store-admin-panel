@@ -3,40 +3,42 @@
   width: 78%;
   text-align: left;
 }
-.viewOrderTable.categoryViewtbl
-  tbody
-  tr
-  td:nth-child(1)
-  .productScreenproductName {
+
+.viewOrderTable.categoryViewtbl tbody tr td:nth-child(1) .productScreenproductName {
   color: var(--mainColor) !important;
   width: 78%;
   text-align: left;
 }
+
 .viewOrderTable.categoryViewtbl thead tr th:nth-child(2),
 .viewOrderTable.categoryViewtbl tbody tr td:nth-child(2) {
   width: 22%;
   text-align: center;
 }
+
 .viewOrderTable.categoryViewtbl tbody tr:hover {
   cursor: auto;
 }
+
 .table-fixed.categoryViewtbl th {
   background: #fff !important;
   border: 1px solid #b3b3b3 !important;
-  border-top: none !important ;
+  border-top: none !important;
   border-left: none !important;
   border-right: none !important;
   background: white;
   position: sticky;
-  top: 60px; /* Don't forget this, required for the stickiness */
+  top: 60px;
+  /* Don't forget this, required for the stickiness */
   box-shadow: 0px 1px 0 0px rgb(0, 0, 0, 0.15);
-  z-index: 99;
 }
+
 .catFirstCell {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
+
 .catFirstCell p {
   margin-left: 10px;
 }
@@ -48,9 +50,11 @@
   align-items: center;
   flex-direction: column;
 }
+
 .tableButton {
   background-color: white;
 }
+
 .categoryTblButton {
   background-color: transparent;
   border-radius: 5px;
@@ -65,17 +69,21 @@
   -o-transition: background-color 0.5s ease;
   transition: background-color 0.5s ease;
 }
+
 .categoryTblButton:hover {
   background: var(--brightGreen);
 }
-.categoryTblButton > span {
+
+.categoryTblButton>span {
   color: var(--brightGreen);
   margin: 0 2px;
 }
-.categoryTblButton:hover > span {
+
+.categoryTblButton:hover>span {
   color: var(--white);
 }
-.categoryTblButton:hover > span svg {
+
+.categoryTblButton:hover>span svg {
   fill: var(--white);
 }
 
@@ -85,6 +93,7 @@
   justify-content: flex-end;
   align-items: center;
 }
+
 .categoryTableAction button {
   margin-left: 8px;
   margin-right: 8px;
@@ -94,6 +103,7 @@
   justify-content: center;
   align-items: center;
 }
+
 .categoryTblDeletButton {
   background-color: transparent;
   border-radius: 5px;
@@ -108,16 +118,20 @@
   -o-transition: background-color 0.5s ease;
   transition: background-color 0.5s ease;
 }
+
 .categoryTblDeletButton:hover {
   background: var(--red);
 }
-.categoryTblDeletButton > span {
+
+.categoryTblDeletButton>span {
   color: var(--red);
   margin: 0 2px;
 }
-.categoryTblDeletButton:hover > span {
+
+.categoryTblDeletButton:hover>span {
   color: var(--white);
 }
-.categoryTblDeletButton:hover > span svg {
+
+.categoryTblDeletButton:hover>span svg {
   fill: var(--white);
 }

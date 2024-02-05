@@ -4,7 +4,7 @@ import { BASE_URL, CUSTOMER_BASE_URL } from "../../../constants";
 import React, { useCallback, useEffect, useState } from "react";
 import { formatNum } from "../../../oscar-pos-core/constants";
 import DashboardAction from "../../common/DashboardAction";
-import { Dropdown } from "react-bootstrap";
+import { Dropdown, Spinner } from "react-bootstrap";
 import Header from "../../common/Header";
 import { Modal } from "react-bootstrap";
 import { connect } from "react-redux";
@@ -30,9 +30,6 @@ var BUTTONS = [
 ];
 
 const Home = ({ history, location, user, analytics }) => {
-  const [analyticsViewText, setAnalyticsViewText] = useState("Life time");
-  const [analyticsDate, setAnalyticsDate] = useState("");
-  const [analyticsData, setAnalyticsData] = useState({});
   const [orderModal, setOrderModal] = useState(false);
   const [selected, setSelected] = useState("home");
   const [custNumber, setCustNumber] = useState("");
@@ -40,49 +37,14 @@ const Home = ({ history, location, user, analytics }) => {
   const [filter, setFilter] = useState("All");
   const [orderId, setOrderId] = useState("");
   const [name, setName] = useState("");
-  // const [orders, setOrders] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const orders = useGetCollectionData('orders');
 
-  // const getFilteredOrders = useCallback((date) => {
-  //   let startTime = new Date(date.start_date).getTime();
-  //   let endTime = new Date(date.end_date).getTime();
-
-  //   let filtOrders = orders.filter((x) => {
-  //     let time = new Date(x.created).getTime();
-  //     return time >= startTime && time <= endTime;
-  //   });
-
-  //   if (filter == "All") {
-  //     SortDefaultOrders(filtOrders).then((res) => setOrders(res));
-  //   } else {
-  //     setOrders([
-  //       ...filtOrders.filter(
-  //         (x) => x.status.toLowerCase() == filter.toLowerCase()
-  //       ),
-  //     ]);
-  //   }
-  // }, [filter, orders]);
-
-  // useEffect(() => {
-  //   if (analyticsViewText === "Life time") {
-  //     if (filter == "All") {
-  //       SortDefaultOrders(orders).then((res) => setOrders(res));
-  //     } else {
-  //       setOrders([
-  //         ...orders.filter(
-  //           (x) => x.status.toLowerCase() == filter.toLowerCase()
-  //         ),
-  //       ]);
-  //     }
-  //   } else {
-  //     getFilteredOrders(analyticsDate);
-  //   }
-  // }, [analyticsDate, analyticsViewText, filter, getFilteredOrders, orders]);
-
   useEffect(() => {
-
-  }, []);
+    if (orders?.length > 0) setLoading(false);
+    else if (orders?.length === 0) setLoading(true);
+  }, [orders]);
 
   // const getOrder = useCallback(() => {
   //   let analyticParams = {
@@ -137,74 +99,14 @@ const Home = ({ history, location, user, analytics }) => {
     });
   };
 
-  // const changeAnalyticsFilter = (filterType) => {
-  //   let date = {};
-  //   analytics.logEvent('analytics_filter');
-  //   switch (filterType) {
-  //     case "Life time":
-  //       date = {
-  //         end_date: moment().format("YYYY-MM-DD"),
-  //         start_date: "2020-11-17",
-  //       };
-  //       setAnalyticsViewText("Life time");
-  //       setAnalyticsDate(date);
-  //       getFilteredOrders(date);
-  //       break;
-  //     case "last 7 days":
-  //       date = {
-  //         end_date: moment().format("YYYY-MM-DD"),
-  //         start_date: moment().subtract(7, "days").format("YYYY-MM-DD"),
-  //       };
-  //       setAnalyticsViewText("Last 7 days");
-  //       setAnalyticsDate(date);
-  //       getFilteredOrders(date);
-  //       break;
-  //     case "last 30 days":
-  //       date = {
-  //         end_date: moment().format("YYYY-MM-DD"),
-  //         start_date: moment().subtract(30, "days").format("YYYY-MM-DD"),
-  //       };
-  //       setAnalyticsViewText("Last 30 days");
-  //       setAnalyticsDate(date);
-  //       getFilteredOrders(date);
-  //       break;
-  //     case "last month":
-  //       date = {
-  //         end_date: moment()
-  //           .subtract(1, "months")
-  //           .endOf("month")
-  //           .format("YYYY-MM-DD"),
-  //         start_date: moment()
-  //           .subtract(1, "months")
-  //           .startOf("month")
-  //           .format("YYYY-MM-DD"),
-  //       };
-  //       console.log("LAST MONTH", date);
-  //       setAnalyticsViewText("Last month");
-  //       setAnalyticsDate(date);
-  //       getFilteredOrders(date);
-  //       break;
-  //     default:
-  //       date = {
-  //         end_date: moment().format("YYYY-MM-DD"),
-  //         start_date: "2020-11-17",
-  //       };
-  //       setAnalyticsViewText("Life time");
-  //       break;
-  //   }
-  //   getTokoAnalyticsPress(date);
-  // };
-
   const handleFilter = (value) => {
     // analytics.logEvent('orders_filter');
     setFilter(value);
-
   }
 
   return (
     <>
       <Header />
-
       <section className="body_Content_Section dashboardInnerSection homeViewSectionMain">
         <div className="container-fluid">
           <div className="row">
@@ -221,50 +123,21 @@ const Home = ({ history, location, user, analytics }) => {
                     <div className="col-sm-10">
                       <h4>Overview</h4>
                     </div>
-
-                    <div className="selctCategoryMain homeFilter">
-                      <Dropdown>
-                        <Dropdown.Toggle variant="success" id="dropdown-basic">
-                          {analyticsViewText}
-                        </Dropdown.Toggle>
-
-                        <Dropdown.Menu>
-                          {BUTTONS.map((categ, index) => {
-                            return (
-                              <Dropdown.Item
-                                // onSelect={() =>
-                                //   changeAnalyticsFilter(categ.name)
-                                // }
-                                key={index}
-                              >
-                                {categ.name}
-                              </Dropdown.Item>
-                            );
-                          })}
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    </div>
                   </div>
 
                   <div className="homeViewSecondSectionInner">
-                    <div className="col-sm-4">
+                    <div className="col-sm-6">
                       <div className="secondSectionboxes">
                         <h5>{orders?.length}</h5>
                         <p>Orders</p>
                       </div>
                     </div>
-                    <div className="col-sm-4 doubleSideBorder">
+                    <div className="col-sm-6 doubleSideBorder">
                       <div className="secondSectionboxes">
                         <h5>
                           {analytics.revenue ? formatNum(analytics.revenue) : 0}
                         </h5>
                         <p>Revenue</p>
-                      </div>
-                    </div>
-                    <div className="col-sm-4">
-                      <div className="secondSectionboxes">
-                        <h5>{analytics.views}</h5>
-                        <p>Store Views</p>
                       </div>
                     </div>
                   </div>
@@ -311,7 +184,28 @@ const Home = ({ history, location, user, analytics }) => {
                           </li>
                         </ul>
                       </div>
-                      {orders.length == 0 ? (
+                      {loading === true ? (
+                        <div className="spinnerContainer" style={{ height: '230px' }}>
+                          <Spinner
+                            className="loaderCircle ProductsList"
+                            animation="border"
+                            role="status"
+                          ></Spinner>
+                        </div>
+                      ) : orders.length > 0 ? (
+                        <div className="orderListingViewMain">
+                          {orders.map((eachOrder, index) => {
+                            return (
+                              <div key={index}>
+                                <OrderItem
+                                  eachOrder={eachOrder}
+                                  history={history}
+                                />
+                              </div>
+                            );
+                          })}
+                        </div>
+                      ) : (
                         <div className="placeHolderContMain noOrderFound">
                           <p>
                             <i className="orderPlaceholderIcon"></i>
@@ -325,20 +219,6 @@ const Home = ({ history, location, user, analytics }) => {
                                   ? "No shipped orders found"
                                   : "No orders found"}
                           </p>
-                        </div>
-                      ) : (
-                        <div className="orderListingViewMain">
-                          {console.log('orders', orders)}
-                          {orders.map((eachOrder, index) => {
-                            return (
-                              <div key={index}>
-                                <OrderItem
-                                  eachOrder={eachOrder}
-                                  history={history}
-                                />
-                              </div>
-                            );
-                          })}
                         </div>
                       )}
                     </div>

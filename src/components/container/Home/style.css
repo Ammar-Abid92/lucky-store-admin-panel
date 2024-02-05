@@ -193,7 +193,7 @@
   margin: 2px 0 0 0;
 }
 
-.doubleSideBorder::after {
+/* .doubleSideBorder::after {
   content: "";
   width: 1px;
   height: 40px;
@@ -201,7 +201,7 @@
   position: absolute;
   right: 14px;
   top: 8px;
-}
+} */
 
 .doubleSideBorder::before {
   content: "";
