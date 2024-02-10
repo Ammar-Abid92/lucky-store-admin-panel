@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { formatNum } from "../../../oscar-pos-core/constants";
-import useGetCollectionData from "../../../hooks/getData";
+import firebase from '../../../firebase';
 
 const ListItem = ({ order, history, index, activePage, allOrders }) => {
   const [customerName, setCustomerName] = useState("");
+  const [customers, setCustomers] = useState([]);
 
-  const customers = useGetCollectionData('customers');
+  const db = firebase.firestore();
 
   const calculateTotalBill = () => {
     if (order.order_total) {
@@ -42,6 +43,19 @@ const ListItem = ({ order, history, index, activePage, allOrders }) => {
   };
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const returnedPromise = db.collection('customers').get();
+        const [snapshot] = await Promise.all([returnedPromise]);
+        const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        setCustomers(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+
     if (customers?.length > 0) {
       customers?.forEach((cust) => {
         if (cust?.id === order?.ordered_by) setCustomerName(cust?.name);

@@ -1,5 +1,4 @@
 import { formatInputNum } from "../../../oscar-pos-core/constants";
-import { BASE_URL, themeStyleSheet } from "../../../constants";
 import React, { useEffect, useState } from "react";
 import loader from "../../../assets/03_Loader.gif";
 import AppDialog from "../../common/AppDialog";
@@ -10,9 +9,8 @@ import { Spinner } from "react-bootstrap";
 import Slider from "../../common/Slider";
 import { connect } from "react-redux";
 import "./style.css";
-import useGetCollectionData from "../../../hooks/getData";
 import firebase from '../../../firebase';
-import { addDataToCollection } from "../../../firebase/utils";
+import { addDocToCollection } from "../../../firebase/utils";
 
 const { innerHeight } = window;
 
@@ -34,61 +32,34 @@ const AddProduct = ({ setAddItems, setAddToggle }) => {
   const [name, setName] = useState("");
   const [success, setSuccess] = useState(false);
   const [quantity, setQuantity] = useState();
+  const [categories, setCategories] = useState([]);
+  const [isMounted, setIsMounted] = useState(true);
 
-  const categories = useGetCollectionData('categories');
+  const db = firebase.firestore();
 
-  const validatation = () => {
-    setLoading(true);
-    setErrors({});
-
-    var errObj = {};
-    var isError = false;
-
-    if (!name || name.toString().length < 1) {
-      errObj = {
-        name: "Item name is required",
-      };
-      isError = true;
-    }
-    if (!price || price === null || price === undefined) {
-      errObj = {
-        ...errObj,
-        price: "Price is required",
-      };
-      isError = true;
-    }
-    if (!unit || unit === null || unit === undefined) {
-      errObj = {
-        ...errObj,
-        unit: "Item unit is required",
-      };
-      isError = true;
-    }
-    if (category.length == 0) {
-      errObj = {
-        ...errObj,
-        category: "Category is required",
-      };
-      isError = true;
-    }
-    if (discountPrice) {
-      if (Number(discountPrice) >= Number(price)) {
-        errObj = {
-          ...errObj,
-          discountPrice: "Discount price should be less than selling price",
-        };
-        isError = true;
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const returnedPromise = db.collection('categories').get();
+        const [snapshot] = await Promise.all([returnedPromise]);
+        const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        if (isMounted) setCategories(data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setLoading(false);
       }
+    };
+
+    fetchData();
+
+    return () => {
+      setIsMounted(false);
     }
-    if (isError == true) {
-      setLoading(false);
-      setErrors(errObj);
-    }
-    return isError;
-  };
+  }, []);
 
   const disableState = () => {
-    if (!name || !unit || !price || category.length == 0) {
+    if (!name || !unit || !price || !discountPrice || !costPrice || !description || !quantity) {
       return true;
     } else return false;
   };
@@ -106,13 +77,15 @@ const AddProduct = ({ setAddItems, setAddToggle }) => {
       quantity: Number(quantity),
       unit,
     };
-    const created = addDataToCollection('items', params);
-    if (created) {
+
+    addDocToCollection('items', params).then(() => {
       setSuccess(true);
       setTimeout(() => {
         window.location.reload();
       }, 2000);
-    };
+    }).catch((error) => {
+      console.log('error', error);
+    })
   };
 
   const getBase64 = (photos) => {
@@ -122,25 +95,6 @@ const AddProduct = ({ setAddItems, setAddToggle }) => {
       let reader = new FileReader();
 
       reader.readAsDataURL(img);
-
-      // reader.onload = function () {
-      //   let params = {
-      //     image_type: "jpg",
-      //     photo: reader.result,
-      //     phone_number: user.phone_number,
-      //     user_id: user.phone_number,
-      //     activation_code: user.activation_code,
-      //   };
-      //   addImageForProduct(params, BASE_URL)
-      //     .then((res) => {
-      //       setImage((prev) => [...prev, res.url]);
-      //       setImgLoading(false);
-      //     })
-      //     .catch((err) => {
-      //       setImgLoading(false);
-      //       console.log("err", err);
-      //     });
-      // };
       reader.onerror = function (error) {
         setImgLoading(false);
         console.log("see error", error);
@@ -467,7 +421,6 @@ const AddProduct = ({ setAddItems, setAddToggle }) => {
               ? "login_btn_next"
               : "login_btn_next addItemDisable"
           }
-          disabled={loading || success}
         >
           <span>
             {loading ? (

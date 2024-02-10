@@ -1,4 +1,4 @@
-import { addDukaanCategoryToCloud, addImageForProduct, getDukaanCategoryFromCloud } from '../../../oscar-pos-core/actions';
+import { addImageForProduct } from '../../../oscar-pos-core/actions';
 import { CATEGORY } from '../../../oscar-pos-core/actions/types';
 import loader from '../../../assets/03_Loader.gif';
 import React, { useEffect, useState } from 'react';
@@ -11,7 +11,7 @@ import { Spinner } from 'react-bootstrap';
 import { store } from '../../../store';
 import { connect } from 'react-redux';
 import './style.css';
-import { addDataToCollection } from '../../../firebase/utils';
+import { addDocToCollection } from '../../../firebase/utils';
 
 const { innerHeight } = window;
 const AddCategory = ({ user, setAddCategory, setToggle }) => {
@@ -23,13 +23,6 @@ const AddCategory = ({ user, setAddCategory, setToggle }) => {
     const [open, setOpen] = useState(false);
     const [image, setImage] = useState('');
     const [description, setDescription] = useState('');
-
-
-    // const getCategories = () => {
-    //     getDukaanCategoryFromCloud(user.vanity_url, BASE_URL, {
-
-    //     })
-    // }
 
     const imgUpload = (e) => {
         setLoading(true);
@@ -92,23 +85,15 @@ const AddCategory = ({ user, setAddCategory, setToggle }) => {
             return;
         }
         else {
-            const doc = addDataToCollection('categories', params);
-            if (doc) {
+            addDocToCollection('categories', params).then(() => {
                 setSuccess(true);
                 setTimeout(() => {
                     window.location.reload();
                 }, 2000)
-            }
+            }).catch((error) => {
+                console.log('error', error);
+            })
         }
-        // let myArr = categories.filter((x) => (x.name).toLowerCase() == (params.name).toLowerCase());
-        // if (myArr.length > 0) {
-        //     setErrors({
-        //         category: 'Category name already exists',
-        //     })
-        //     setCatLoad(false);
-        //     return;
-        // } else {
-        // }
     }
 
 

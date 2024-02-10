@@ -1,25 +1,18 @@
 import CSVListItem from "../../container/AddBulkProducts/ListItem";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import DashboardAction from "../../common/DashboardAction";
 import Pagination from "@mui/material/Pagination";
 import AppDialog from "../../common/AppDialog";
-import { BASE_URL } from "../../../constants";
 import { analytics } from "../../../firebase";
 import { Spinner } from "react-bootstrap";
 import Header from "../../common/Header";
 import Slider from "../../common/Slider";
 import { connect } from "react-redux";
 import ListItem from "./ListItem";
-import Cookies from "js-cookie";
-import axios from "axios";
 import "./style.css";
-import {
-  addBulkProductsFromCSV,
-  getDukaanProductFromCloud,
-} from "../../../oscar-pos-core/actions";
-import useGetCollectionData from "../../../hooks/getData";
+import firebase from '../../../firebase';
 
-const AllProducts = ({ history, location, products }) => {
+const AllProducts = ({ history, location }) => {
   const [selected, setSelected] = useState("AllProducts");
   const [bulkProducts, setBulkProducts] = useState([]);
   // const [allProducts, setAllProducts] = useState([]);
@@ -38,8 +31,8 @@ const AllProducts = ({ history, location, products }) => {
   const [errors, setErrors] = useState({});
   const [open, setOpen] = useState(false);
   const [id, setId] = useState("");
+  const [allProducts, setAllProducts] = useState([]);
 
-  const allProducts = useGetCollectionData('items');
 
   const keys = [
     "Image",
@@ -54,60 +47,31 @@ const AllProducts = ({ history, location, products }) => {
     "",
   ];
 
+  const db = firebase.firestore();
+
   useEffect(() => {
-    if (allProducts?.length > 0) {
-      setLoading(false);
-    }
-    else {
-      if (allProducts?.length === 0) setLoading(true);
-    }
-  }, [allProducts]);
+    const fetchData = async () => {
+      try {
+        const returnedPromise = db.collection('items').get();
+        const [snapshot] = await Promise.all([returnedPromise]);
+        const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        setAllProducts(data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleSearch = (val) => {
     if (allProducts.length) {
       let res = allProducts.filter(x => x.name.toLowerCase().includes(val.toLowerCase()))
-      setSearch(res)
+      setSearch(res);
     }
   }
-
-  // const getProducts = useCallback(async () => {
-  //   if (search === "") {
-  //     getDukaanProductFromCloud(BASE_URL, {
-  //       pageNumber: activePage,
-  //     })
-  //       .then((res) => {
-  //         setTotalItems(res.data.data.total);
-  //         setNumOfPages(Math.ceil(res.data.data.total / 10));
-  //         setLoading(false);
-  //       })
-  //       .catch((err) => {
-  //         setLoading(false);
-  //       });
-  //   } else {
-  //     // let url = `${BASE_URL}api/toko/v3/merchant/${user.vanity_url
-  //     //   }/products?page_number=${activePage}&page_size=${10}&name=${search}`;
-
-  //     axios
-  //       .get(url, {
-  //         headers: {
-  //           Authorization: "JWT " + Cookies.get("token"),
-  //           "Content-Type": "application/json",
-  //         },
-  //       })
-  //       .then((res) => {
-  //         setNumOfPages(Math.ceil(res.data.data.total / 10));
-  //         setAllProducts(res.data.data.results);
-  //       });
-  //   }
-  // }, [activePage, search]);
-
-  // useEffect(() => {
-  //   getProducts();
-  // }, [getProducts]);
-
-  // useEffect(() => {
-  //   setAllProducts(products);
-  // }, [products]);
 
   const clearSearch = () => {
     setSearch("");
@@ -140,138 +104,6 @@ const AllProducts = ({ history, location, products }) => {
       setToggle(true);
     }, 100);
   };
-
-  // const handleLoadMore = (isMore) => {
-  //   if (isMore) {
-  //     setAllProducts(products);
-  //   } else {
-  //     setAllProducts(products.slice(0, 5));
-  //   }
-  // };
-
-  const validateInput = () => {
-    setLoading(true);
-    let obj = {};
-    bulkProducts.map((x, index) => {
-      if (x["name"] === "") {
-        obj[index] = {
-          name: "Name is required",
-        };
-      }
-      if (x["price"]) {
-        if (isNaN(x["price"]) || Number(x["price"]) === 0) {
-          obj[index] = {
-            price: "Enter a valid price",
-          };
-        }
-      } else {
-        obj[index] = {
-          price: "Price is required",
-        };
-      }
-      if (x["costPrice"]) {
-        if (isNaN(x["costPrice"]) || Number(x["costPrice"]) === 0) {
-          obj[index] = {
-            costPrice: "Enter a valid price",
-          };
-        }
-      }
-      if (x["discountPrice"]) {
-        if (isNaN(x["discountPrice"]) || Number(x["discountPrice"]) === 0) {
-          obj[index] = {
-            discount: "Enter a valid price",
-          };
-        }
-      }
-      if (x["discountPrice"]) {
-        if (Number(x["discountPrice"]) >= Number(x["price"])) {
-          obj[index] = {
-            discount: "Discount price must be less than selling price",
-          };
-        }
-      }
-      if (x["stock"]) {
-        if (isNaN(x["stock"]) || Number(x["stock"]) === 0) {
-          obj[index] = {
-            stock: "Enter a valid Stock",
-          };
-        }
-      } else {
-        obj[index] = {
-          stock: "Stock is required",
-        };
-      }
-      if (
-        !x["perUnit"] ||
-        x["perUnit"] === null ||
-        x["perUnit"] === undefined
-      ) {
-        obj[index] = {
-          unit: "Item unit is required",
-        };
-      }
-      if (x["categories"] == "") {
-        obj[index] = {
-          category: "Item category is required",
-        };
-      }
-      if (x["weight"]) {
-        if (isNaN(x["weight"]) || Number(x["weight"]) === 0) {
-          obj[index] = {
-            weight: "Enter valid weight",
-          };
-        }
-      }
-    });
-
-    if (Object.keys(obj).length) {
-      setErrors(obj);
-      return false;
-    } else {
-      setErrors({});
-      return true;
-    }
-  };
-
-  const getProcessedDataOfCSV = () => {
-    let myArr = bulkProducts.map((x) => {
-      return {
-        ...x,
-        price: parseFloat(x.price),
-        discountPrice: isNaN(parseFloat(x.discountPrice)) ? '' : parseFloat(x.discountPrice),
-        costPrice: isNaN(parseFloat(x.costPrice))
-          ? ""
-          : parseFloat(x.costPrice),
-        stock: parseInt(x.stock),
-        weight: parseFloat(x.weight || 0),
-      };
-    });
-    let params = {
-      // phone_number: user.phone_number,
-      products: myArr,
-    };
-    return params;
-  };
-
-  // const handleUploadCSVItems = () => {
-  //   if (validateInput() == false) {
-  //     setLoading(false);
-  //     return;
-  //   } else {
-  //     let processedData = getProcessedDataOfCSV();
-
-  //     addBulkProductsFromCSV(processedData, BASE_URL)
-  //       .then((res) => {
-  //         setBulkProducts([]);
-  //         getProducts();
-  //         setErrors({});
-  //       })
-  //       .catch((err) => {
-  //         setLoading(false);
-  //         console.log("catch", err);
-  //       });
-  //   }
-  // };
 
   const addNewProductToArrayCSV = () => {
     let arr = bulkProducts;
@@ -391,7 +223,6 @@ const AllProducts = ({ history, location, products }) => {
                       <button
                         className="btn btn-primary login_btn_next"
                         disabled={loading}
-                      // onClick={() => handleUploadCSVItems()}
                       >
                         {loading ? (
                           <Spinner
@@ -463,7 +294,7 @@ const AllProducts = ({ history, location, products }) => {
                             </tr>
                           </thead>
                           <tbody>
-                            { (search.length ? search : allProducts)
+                            {(search.length ? search : allProducts)
                               .sort((a, b) =>
                                 a.name < b.name ? -1 : a.name > b.name ? 1 : 0
                               )

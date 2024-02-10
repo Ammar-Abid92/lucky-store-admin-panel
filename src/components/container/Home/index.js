@@ -1,103 +1,42 @@
-import { getTokoAnalytics } from "../../../oscar-pos-core/actions/analyticsMerchant";
-import { getDukaanOrdersFromCloud } from "../../../oscar-pos-core/actions";
-import { BASE_URL, CUSTOMER_BASE_URL } from "../../../constants";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { formatNum } from "../../../oscar-pos-core/constants";
 import DashboardAction from "../../common/DashboardAction";
-import { Dropdown, Spinner } from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
 import Header from "../../common/Header";
 import { Modal } from "react-bootstrap";
 import { connect } from "react-redux";
 import OrderItem from "./OrderItem";
-import moment from "moment";
 import "./style.css";
 import firebase from "../../../firebase";
-import useGetCollectionData from "../../../hooks/getData";
 
-var BUTTONS = [
-  {
-    name: "Life time",
-  },
-  {
-    name: "last 7 days",
-  },
-  {
-    name: "last 30 days",
-  },
-  {
-    name: "last month",
-  },
-];
-
-const Home = ({ history, location, user, analytics }) => {
+const Home = ({ history, location, analytics }) => {
   const [orderModal, setOrderModal] = useState(false);
   const [selected, setSelected] = useState("home");
   const [custNumber, setCustNumber] = useState("");
-  const [expanded, setExpanded] = useState(false);
   const [filter, setFilter] = useState("All");
   const [orderId, setOrderId] = useState("");
   const [name, setName] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [orders, setOrders] = useState([]);
 
-  const orders = useGetCollectionData('orders');
+  const db = firebase.firestore();
 
   useEffect(() => {
-    if (orders?.length > 0) setLoading(false);
-    else if (orders?.length === 0) setLoading(true);
-  }, [orders]);
+    const fetchData = async () => {
+      try {
+        const returnedPromise = db.collection('orders').get();
+        const [snapshot] = await Promise.all([returnedPromise]);
+        const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        setOrders(data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setLoading(false);
+      }
+    };
 
-  // const getOrder = useCallback(() => {
-  //   let analyticParams = {
-  //     phone_number: user.phone_number,
-  //     start_date: "2020-10-26",
-  //     end_date: moment().format("YYYY-MM-DD"),
-  //   };
-
-  //   Promise.all([
-  //     getDukaanOrdersFromCloud(BASE_URL, {
-  //       phone_number: user.phone_number,
-  //       page_size: 4000
-  //     }),
-  //     getTokoAnalytics(BASE_URL, analyticParams),
-  //   ])
-  //     .then((res) => {
-  //       SortDefaultOrders(res.results).then((res) => setOrders(res));
-  //     })
-  //     .catch((err) => {
-  //       console.log("error at promise all", err);
-  //     });
-  // }, [user.phone_number]);
-
-  const SortDefaultOrders = (data) => {
-    let pendingOrders,
-      acceptedOrders,
-      outForDeliveryOrders,
-      deliveredOrders,
-      decline,
-      cancelled,
-      allOrders = "";
-    data.sort((a, b) => {
-      var dateA = new Date(a.created),
-        dateB = new Date(b.created);
-      return dateB - dateA;
-    });
-
-    return new Promise((res, rej) => {
-      pendingOrders = data.filter((item) => item.status === "pending");
-      acceptedOrders = data.filter((item) => item.status === "accepted");
-      outForDeliveryOrders = data.filter((item) => item.status === "shipped");
-      deliveredOrders = data.filter((item) => item.status === "delivered");
-      decline = data.filter((item) => item.status === "declined");
-      cancelled = data.filter((item) => item.status === "cancelled");
-      allOrders = pendingOrders
-        .concat(acceptedOrders)
-        .concat(outForDeliveryOrders)
-        .concat(deliveredOrders)
-        .concat(decline)
-        .concat(cancelled);
-      res(allOrders);
-    });
-  };
+    fetchData();
+  }, []);
 
   const handleFilter = (value) => {
     // analytics.logEvent('orders_filter');
@@ -114,7 +53,6 @@ const Home = ({ history, location, user, analytics }) => {
               history={history}
               currentSelection={selected}
               location={location}
-              toggleExpanded={setExpanded}
             />
             <div className={"col-sm-10"}>
               <div className="RightSectionMain">

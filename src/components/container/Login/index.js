@@ -1,38 +1,21 @@
-import { getUser, resendCode } from "../../../oscar-pos-core/actions";
-import { BASE_URL, getCurrency } from "../../../constants";
+import { getUser } from "../../../oscar-pos-core/actions";
+import { getCurrency } from "../../../constants";
 import Pakistan from "../../../assets/images/Pakistan.png";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { Spinner } from "react-bootstrap";
 import Header from "../../common/Header";
 import { connect } from "react-redux";
 import "./style.css";
 import firebase from "../../../firebase";
+import { message } from 'antd';
 
-const Login = ({ history, user, dispatch, location }) => {
+const Login = ({ history, dispatch }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [loading, setLoading] = useState(false);
-  const [device, setDevice] = useState(false);
   const [errors, setErrors] = useState({});
 
   const [verificationCode, setVerificationCode] = useState('');
   const [confirmationResult, setConfirmationResult] = useState(null);
-
-  const DURATION = "59";
-
-  const [showResendCode, setShowResendCode] = useState(false);
-  const [invalidCode, setInvalidCode] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(DURATION);
-  const OtpInputRef = useRef();
-
-  useEffect(() => {
-    if (
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Windows Phone/i.test(
-        navigator.userAgent
-      )
-    ) {
-      setDevice(true);
-    }
-  }, []);
 
   const country = {
     code: "PK",
@@ -70,7 +53,10 @@ const Login = ({ history, user, dispatch, location }) => {
       const confirmation = await firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier);
       confirmation && setConfirmationResult(confirmation);
     } catch (error) {
-      console.error('Error sending code:', error);
+      message.error('Some Error Occurred. Please Try Again!');
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     }
   };
 
@@ -81,11 +67,13 @@ const Login = ({ history, user, dispatch, location }) => {
       if (verificationCode.length === 6) {
         const isCodeVerified = await confirmationResult.confirm(verificationCode);
         if (isCodeVerified) {
-          console.log('Phone number verified successfully!');
           localStorage.setItem('userConfirmation', JSON.stringify(confirmationResult));
           setLoading(false);
+          message.success('Logged In Successfully!');
         }
-        window.location.reload();
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
       }
     } catch (error) {
       console.log('error', error);

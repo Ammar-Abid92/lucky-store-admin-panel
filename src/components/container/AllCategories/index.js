@@ -1,32 +1,44 @@
-import { getDukaanCategoryFromCloud } from "../../../oscar-pos-core/actions";
 import DashboardAction from "../../common/DashboardAction";
 import React, { useState, useEffect } from "react";
 import Pagination from '@mui/material/Pagination'
-import { BASE_URL } from "../../../constants";
 import { Spinner } from "react-bootstrap";
 import Slider from "../../common/Slider";
 import Header from "../../common/Header";
 import { connect } from "react-redux";
 import ListItem from "./ListItem";
-import Cookies from 'js-cookie';
-import axios from "axios";
 import "./style.css";
-import useGetCollectionData from "../../../hooks/getData";
+import firebase from '../../../firebase';
 
 const AllCategories = ({ history, location }) => {
   const [selected, setSelected] = useState("AllCategories");
   const [addCategory, setAddCategory] = useState(false);
   const [editCategory, setEditCategory] = useState(false);
   const [categoryId, setCatId] = useState("");
-  const [expanded, setExpanded] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [toggle, setToggle] = useState(false);
   const [search, setSearch] = useState("");
-  const [numOfPages, setNumOfPages] = useState(0)
-  const [activePage, setActivePage] = useState(1)
-  const [totalItems, setTotalItems] = useState(0)
+  const [numOfPages, setNumOfPages] = useState(0);
+  const [activePage, setActivePage] = useState(1);
+  const [allCategories, setAllCategories] = useState([]);
 
-  const allCategories = useGetCollectionData('categories');
+  const db = firebase.firestore();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const returnedPromise = db.collection('categories').get();
+        const [snapshot] = await Promise.all([returnedPromise]);
+        const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        setAllCategories(data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleAddCategory = () => {
     setAddCategory(true);
@@ -49,19 +61,9 @@ const AllCategories = ({ history, location }) => {
   const onSearchChange = (val) => {
     if (allCategories.length) {
       let res = allCategories.filter(x => x.name.toLowerCase().includes(val.toLowerCase()))
-      setSearch(res)
+      setSearch(res);
     }
   }
-
-
-  useEffect(() => {
-    if (allCategories?.length > 0) {
-      setLoading(false);
-    }
-    else {
-      if (allCategories?.length === 0) setLoading(true);
-    }
-  }, [allCategories]);
 
   return (
     <>
@@ -73,7 +75,6 @@ const AllCategories = ({ history, location }) => {
               type="AllCategories"
               history={history}
               location={location}
-              toggleExpanded={setExpanded}
               currentSelection={selected}
             />
             <div className={"col-sm-10"}>
@@ -89,7 +90,7 @@ const AllCategories = ({ history, location }) => {
                       role="status"
                     ></Spinner>
                   </div>
-                ) : allCategories.length > 0 ? (
+                ) : allCategories?.length > 0 ? (
                   <div className="productScreenMainCont">
                     <div className="viewsTopActionSection">
                       <div className="row">
@@ -128,7 +129,7 @@ const AllCategories = ({ history, location }) => {
                           </tr>
                         </thead>
                         <tbody>
-                          { (search.length ? search : allCategories)
+                          {(search.length ? search : allCategories)
                             .sort((a, b) =>
                               a.name < b.name ? -1 : a.name > b.name ? 1 : 0
                             )

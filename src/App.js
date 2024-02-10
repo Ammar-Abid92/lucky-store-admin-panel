@@ -6,16 +6,15 @@ import './App.css';
 
 function App() {
   const timeInMillseconds = 24 * 60 * 60 * 1000;   // -----> 24 hrs
-  let user = JSON.parse(localStorage.getItem('userConfirmation'));
-
   setTimeout(() => {
+    const user = JSON.parse(localStorage.getItem('userConfirmation'));
     if (user) {
       localStorage.removeItem('userConfirmation');
     }
   }, timeInMillseconds);
 
   return (
-    <Routes user={user} />
+    <Routes />
   );
 }
 

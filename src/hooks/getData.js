@@ -1,19 +1,23 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import firebase from '../firebase';
 const db = firebase.firestore();
 
 const useGetCollectionData = (collectionName) => {
     const [data, setData] = useState([]);
     useEffect(() => {
-        fetchData()
-    }, [collectionName])
+        const fetchOrders = async () => {
+            try {
+                const collectionPromise = db.collection(collectionName).get();
+                const [snapshot] = await Promise.all([collectionPromise]);
+                const results = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+                setData(results);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
 
-    const fetchData = async () => {
-        const collectionRef = db.collection(collectionName);
-        const snapshot = await collectionRef.get();
-        const fetchedData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        setData(fetchedData);
-    };
+        fetchOrders();
+    }, []);
 
     return data;
 }

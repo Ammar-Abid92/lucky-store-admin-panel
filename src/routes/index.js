@@ -23,9 +23,10 @@ import Home from "../components/container/Home";
 import { connect } from "react-redux";
 import React, { useEffect } from "react";
 
-const Routes = ({ user }) => {
+const Routes = () => {
+  const user = JSON.parse(localStorage.getItem('userConfirmation'));
   useEffect(() => {
-    console.log('useEffect of routes component called!');
+    console.log('useEffect of Routes called!');
   }, [user]);
 
   return (

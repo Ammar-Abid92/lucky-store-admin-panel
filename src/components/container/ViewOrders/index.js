@@ -1,19 +1,12 @@
-import { getDukaanOrdersFromCloud } from '../../../oscar-pos-core/actions';
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import DashboardAction from '../../common/DashboardAction';
-import { CUSTOMER_BASE_URL } from '../../../constants';
-import Pagination from '@mui/material/Pagination';
-import { BASE_URL } from '../../../constants';
-import { analytics } from '../../../firebase';
 import { Dropdown } from 'react-bootstrap';
 import { Spinner } from 'react-bootstrap';
 import Header from '../../common/Header';
 import { connect } from 'react-redux';
 import ListItem from './ListItem';
-import Cookies from 'js-cookie';
-import axios from 'axios';
 import './style.css';
-import useGetCollectionData from '../../../hooks/getData';
+import firebase from '../../../firebase';
 
 var FILTER = [
   {
@@ -40,29 +33,22 @@ var FILTER = [
 ];
 
 const ViewOrders = ({ history, location }) => {
-
-  const allOrders = useGetCollectionData('orders');
-
   const [selected, setSelected] = useState('ViewOrders');
   const [selectedFilter, setSelFilter] = useState('All');
   const [activePage, setActivePage] = useState(1);
-  const [expanded, setExpanded] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [allOrders, setAllOrders] = useState([]);
   const [search, setSearch] = useState(allOrders);
+
+  const db = firebase.firestore();
 
   const changeFilter = (type) => {
     setSelFilter(type);
-
     if (type !== 'All') {
       let filtered = allOrders.filter((each) => each.order_status == type.toLowerCase());
       setSearch(filtered)
     }
   };
-
-  const handleChange = (event, value) => {
-    setActivePage(value);
-  };
-
 
   const handleSearch = (val) => {
     if (allOrders.length) {
@@ -72,8 +58,21 @@ const ViewOrders = ({ history, location }) => {
   }
 
   useEffect(() => {
-    if (allOrders?.length > 0) setLoading(false);
-  }, [allOrders]);
+    const fetchData = async () => {
+      try {
+        const returnedPromise = db.collection('orders').get();
+        const [snapshot] = await Promise.all([returnedPromise]);
+        const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        setAllOrders(data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -81,7 +80,7 @@ const ViewOrders = ({ history, location }) => {
       <section className='body_Content_Section dashboardInnerSection'>
         <div className='container-fluid'>
           <div className='row'>
-            <DashboardAction type='ViewOrders' history={history} currentSelection={selected} location={location} toggleExpanded={setExpanded} />
+            <DashboardAction type='ViewOrders' history={history} currentSelection={selected} location={location} />
             <div className={'col-sm-10'}>
               <div className='RightSectionMain'>
                 <div className='viewFirstHeading'>

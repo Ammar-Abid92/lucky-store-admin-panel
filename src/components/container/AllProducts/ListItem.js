@@ -1,22 +1,32 @@
-import { deleteDukaanProductToCloud, updateDukaanProductStatusToCloud } from '../../../oscar-pos-core/actions';
-import { BASE_URL, CUSTOMER_BASE_URL } from '../../../constants';
 import placeholder from '../../../assets/icons/placeholder.png';
-import { PRODUCT } from '../../../oscar-pos-core/actions/types';
-import { formatNum } from '../../../oscar-pos-core/constants';
 import AppDialog from '../../common/AppDialog';
-import { analytics } from '../../../firebase';
+import firebase from '../../../firebase';
 import { Dropdown } from 'react-bootstrap';
 import React, { useEffect, useState } from 'react';
-import { store } from '../../../store';
 import './style.css';
-import useGetCollectionData from '../../../hooks/getData';
 
-const ListItem = ({ product, user, handleEdit, index, activePage, toggleItem, setToggleItem }) => {
+const ListItem = ({ product, handleEdit, index, activePage, toggleItem, setToggleItem }) => {
     const [open, setOpen] = useState(false);
     const [category, setCategory] = useState("");
+    const [categories, setCategories] = useState([]);
+    const [isMounted, setIsMounted] = useState(true);
 
-    const categories = useGetCollectionData('categories');
+    const db = firebase.firestore();
+
     useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const returnedPromise = db.collection('categories').get();
+                const [snapshot] = await Promise.all([returnedPromise]);
+                const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+                if (isMounted) setCategories(data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+
         if (categories?.length > 0) {
             categories?.forEach((categ) => {
                 if (categ?.id === product?.category_id) {
@@ -24,38 +34,20 @@ const ListItem = ({ product, user, handleEdit, index, activePage, toggleItem, se
                 };
             })
         }
+
+        return () => {
+            setIsMounted(false);
+        }
     }, [categories]);
 
     const deleteProduct = () => {
-        setOpen(false);
-        deleteDukaanProductToCloud(product, user, BASE_URL).then(res => {
-            analytics.logEvent('product_deleted');
-            store.dispatch({
-                type: PRODUCT.REMOVE_PRODUCT,
-                id: product.id,
-            })
-        }).catch(err => {
-            console.log('Error deleting product on cloud', err);
-        })
-    }
 
-    const handleActive = (e) => {
-
-        e.stopPropagation();
-        e.preventDefault();
-
-        const { _id, isActive } = product;
-
-        let params = {
-            _id,
-            isActive: !isActive,
-        };
     }
 
     return (
         <>
             <tr onClick={(e) => {
-                handleEdit(e, product._id)
+                handleEdit(e, product.id)
                 setToggleItem(false)
             }}>
 
@@ -95,12 +87,12 @@ const ListItem = ({ product, user, handleEdit, index, activePage, toggleItem, se
                 </td>
                 <td className="tblActionCell">
                     <Dropdown
-                        show={toggleItem === product._id} onClick={(e) => {
+                        show={toggleItem === product.id} onClick={(e) => {
                             e.stopPropagation()
-                            setToggleItem(product._id)
+                            setToggleItem(product.id)
                         }}
                     >
-                        <Dropdown.Toggle variant="success" id="dropdown-basics" active={toggleItem === product._id}  >
+                        <Dropdown.Toggle variant="success" id="dropdown-basics" active={toggleItem === product.id}  >
                             <span>
                                 <i className="moreIcon"></i>
                             </span>
@@ -108,7 +100,7 @@ const ListItem = ({ product, user, handleEdit, index, activePage, toggleItem, se
 
                         <Dropdown.Menu >
                             <Dropdown.Item onClick={(e) => {
-                                handleEdit(e, product._id)
+                                handleEdit(e, product.id)
                                 setToggleItem(false)
                             }}>
                                 <span>
