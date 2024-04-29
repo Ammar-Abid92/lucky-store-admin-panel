@@ -82,9 +82,6 @@ const ViewOrders = ({ history, location }) => {
         <div className='container-fluid'>
           <div className='row'>
             <DashboardAction type='ViewOrders' history={history} currentSelection={selected} toggleExpanded={setExpanded} location={location} />
-            <div className={'col-sm-10'}>
-              <div className='RightSectionMain'>
-                <div className='viewFirstHeading'>
                   <h1>View Orders</h1>
                 </div>
                 {loading == true ? (
@@ -159,9 +156,6 @@ const ViewOrders = ({ history, location }) => {
                   )
                 }
               </div>
-            </div>
-          </div>
-        </div>
       </section>
     </>
   );
