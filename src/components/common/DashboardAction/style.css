@@ -1,0 +1,205 @@
+.leftSectionNav {
+  padding-top: 15px;
+  height: calc(-60px + 100vh);
+}
+
+.mainNav {
+  padding: 0;
+}
+
+.mainNav li {
+  display: block;
+  list-style: none;
+}
+
+.mainNav li a {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px 0;
+  cursor: pointer;
+}
+
+.navHomeIcon {
+  background: url("../../../assets/icons/Home_icon.svg");
+  background-size: cover;
+  width: 25px;
+  height: 25px;
+  display: block;
+  /* margin-right: 10px; */
+  top: 2px;
+  position: relative;
+}
+
+.navOrderIcon {
+  background: url("../../../assets/icons/Orders_gray.svg");
+  background-size: cover;
+  width: 28px;
+  height: 28px;
+  display: block;
+  margin-right: 1px;
+  position: relative;
+}
+
+.navProductIcon {
+  background: url("../../../assets/icons/Products_gray.svg");
+  background-size: cover;
+  width: 28px;
+  height: 28px;
+  display: block;
+  margin-right: 1px;
+  position: relative;
+}
+
+.navCategoryIcon {
+  background: url("../../../assets/icons/Category_Gray.svg");
+  background-size: cover;
+  width: 28px;
+  height: 28px;
+  display: block;
+  margin-right: 1px;
+  position: relative;
+}
+
+.navAccountIcon {
+  background: url("../../../assets/icons/Account_Gray.svg");
+  background-size: cover;
+  width: 28px;
+  height: 28px;
+  display: block;
+  margin-right: 1px;
+  position: relative;
+}
+
+.navLogoutIcon {
+  background: url("../../../assets/icons/Logout.svg");
+  background-size: cover;
+  width: 28px;
+  height: 28px;
+  display: block;
+  margin-right: 1px;
+  position: relative;
+}
+
+.leftSectionNav .sidenav---sidenav-navitem---uwIJ-,
+.leftSectionNav .sidenav---navitem---9uL5T {
+  display: flex !important;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  border-bottom: 1px solid rgba(238, 238, 238, 0.4);
+}
+
+.sidenav---sidenav-nav---3tvij>.sidenav---sidenav-navitem---uwIJ->.sidenav---navitem---9uL5T .sidenav---navicon---3gCRo,
+.sidenav---sidenav-nav---3tvij>.sidenav---sidenav-navitem---uwIJ->.sidenav---navitem---9uL5T .sidenav---navtext---1AE_f {
+  color: #414141 !important;
+  font-size: 0.9rem;
+}
+
+.sidenav---sidenav---_2tBP {
+  z-index: 99 !important;
+  min-width: 64px;
+  background: #fff !important;
+  border-right: 1px solid #efefef !important;
+  box-shadow: 0 0px 1px rgba(0, 0, 0, 0.12);
+  transition: min-width 0.2s;
+}
+
+.leftSectionNav .sidenav---navitem---9uL5T .sidenav---navicon---3gCRo {
+  height: 30px !important;
+
+  line-height: 30px !important;
+}
+
+.leftSectionNav .sidenav---sidenav-toggle---1KRjR .sidenav---icon-bar---u1f02 {
+  background: var(--mainColor) !important;
+}
+
+.leftSectionNav .sidenav---collapsed---LQDEv .sidenav---navicon---3gCRo span {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.leftSectionNav .sidenav---expanded---1KdUL .sidenav---navicon---3gCRo {
+  /* border: 1px solid !important; */
+  display: flex !important;
+  justify-content: center;
+  opacity: 1 !important;
+}
+
+.leftSectionNav .sidenav---sidenav---_2tBP {
+  transition: min-width 0.4s;
+}
+
+.leftSectionNav .sidenav---sidenav-navitem---uwIJ-:hover {
+  background: #efefef;
+}
+
+.leftSectionNav .sidenav---sidenav-navitem---uwIJ-:hover .sidenav---navicon---3gCRo {
+  opacity: 0.7 !important;
+}
+
+.leftSectionNav .sidenav---sidenav-navitem---uwIJ-.active {
+  background: #efefef;
+}
+
+.leftSectionNav .sidenav---sidenav-navitem---uwIJ-.active .sidenav---navicon---3gCRo .navHomeIcon {
+  background: url("../../../assets/icons/Home_Purple.svg");
+  background-size: cover;
+  width: 26px;
+  height: 26px;
+  display: block;
+  margin-right: 1px;
+}
+
+.leftSectionNav .sidenav---sidenav-navitem---uwIJ-.active .sidenav---navicon---3gCRo .navOrderIcon {
+  background: url("../../../assets/icons/Orders.svg");
+  background-size: cover;
+  width: 28px;
+  height: 28px;
+  display: block;
+  margin-right: 1px;
+}
+
+.leftSectionNav .sidenav---sidenav-navitem---uwIJ-.active .sidenav---navicon---3gCRo .navProductIcon {
+  background: url("../../../assets/icons/Products_Purple.svg");
+  background-size: cover;
+  width: 28px;
+  height: 28px;
+  display: block;
+  margin-right: 1px;
+}
+
+.leftSectionNav .sidenav---sidenav-navitem---uwIJ-.active .sidenav---navicon---3gCRo .navCategoryIcon {
+  background: url("../../../assets/icons/Category_Purple.svg");
+  background-size: cover;
+  width: 28px;
+  height: 28px;
+  display: block;
+  margin-right: 1px;
+}
+
+.leftSectionNav .sidenav---sidenav-navitem---uwIJ-.active .sidenav---navicon---3gCRo .navAccountIcon {
+  background: url("../../../assets/icons/Account_Purple.svg");
+  background-size: cover;
+  width: 28px;
+  height: 28px;
+  display: block;
+  margin-right: 1px;
+}
+
+.marginLeft {
+  padding-left: 0;
+}
+
+.marginLeftClosed {
+  /* padding-left: 0px; */
+  padding-left: 50px;
+}
+
+.leftSectionNav .sidenav---sidenav---_2tBP {
+  position: fixed;
+  top: 85px;
+  /* z-index: 100 !important; */
+}

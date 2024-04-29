@@ -1,0 +1,103 @@
+index 6f3c2d8..1db313f 100644
+--- a/src/components/container/ViewOrders/index.js
++++ b/src/components/container/ViewOrders/index.js
+@@ -55,16 +55,17 @@ const ViewOrders = ({ user, orders, history, location }) => {
+         getDukaanOrdersFromCloud(BASE_URL, {
+           page_number: activePage,
+         }),
+-      ])
++      
++    ])
+         .then((res) => {
+           console.log(res, "orders");
+           SortDefaultOrders(res[0].results).then((ord) => {
+-            console.log(ord);
++            changeFilter(ord, selectedFilter);
+             setNumOfPages(Math.ceil(res[0].total / 10));
+             setTotalItems(res[0].total);
+             // const sortedOrders = ord.sort((a, b) => a.created - b.created);
+             // console.log(sortedOrders[0], 'sorted')
+-            setAllOrders(ord);
++            // setAllOrders(ord);
+           });
+           setLoading(false);
+         })
+@@ -72,6 +73,7 @@ const ViewOrders = ({ user, orders, history, location }) => {
+           console.log("err getting orders from cloud", err);
+           setLoading(false);
+         });
++
+     } else {
+       let url = `${BASE_URL}api/toko/v3/orders?name=${search}&page_size=10&page_number=${activePage}`;
+ 
+@@ -91,7 +93,7 @@ const ViewOrders = ({ user, orders, history, location }) => {
+         })
+         .catch((e) => console.log(e));
+     }
+-  }, [activePage, search]);
++  }, [activePage, search, selectedFilter]);
+ 
+   useEffect(() => {
+     getOrders();
+@@ -156,16 +158,19 @@ const ViewOrders = ({ user, orders, history, location }) => {
+     setSearch(text);
+   };
+ 
+-  const changeFilter = (type) => {
+-    setSelFilter(type);
++  const changeFilter = (ord, type) => {
++    // setSelFilter(type);
++    console.log("filter---->", type)
++
+ 
+     if (type !== "All") {
+-      let searchOrder = orders.filter((item) =>
+-        item.status.includes(type.toLocaleLowerCase())
++      let searchOrder = ord.filter((item) =>
++        item.status === type.toLocaleLowerCase()
+       );
++      console.log("ORDERS---->", searchOrder)
+       setAllOrders(searchOrder);
+     } else {
+-      setAllOrders(orders);
++      setAllOrders(ord);
+     }
+   };
+ 
+@@ -178,6 +183,7 @@ const ViewOrders = ({ user, orders, history, location }) => {
+   };
+ 
+   const handleChange = (event, value) => {
++    console.log("PAGE---->", value)
+     setActivePage(value);
+   };
+ 
+@@ -290,7 +296,7 @@ const ViewOrders = ({ user, orders, history, location }) => {
+                                         <Dropdown.Item
+                                           key={value.name}
+                                           onSelect={() =>
+-                                            changeFilter(value.name)
++                                            setSelFilter(value.name)
+                                           }
+                                         >
+                                           {value.name}
+diff --git a/src/constants/index.js b/src/constants/index.js
+index 3dce91e..3434a9a 100644
+--- a/src/constants/index.js
++++ b/src/constants/index.js
+@@ -35,7 +35,8 @@ const setBaseURL = () => {
+     ENVIRONMENT = "DEV";
+     WEB_BASE_URL = 'sell.ubook.pk';
+     CUSTOMER_BASE_URL = 'ubook.pk';
+-    return `https://api.ubook.pk/`;
++    // return `https://api.ubook.pk/`;
++    return `http://localhost:8000/`
+   } else {
+     ENVIRONMENT = "PROD"
+     WEB_BASE_URL = 'sell.toko.pk';
+diff --git a/src/oscar-pos-core b/src/oscar-pos-core
+--- a/src/oscar-pos-core
++++ b/src/oscar-pos-core
+@@ -1 +1 @@
+-Subproject commit 30b8542df3db0f2058cfcd3dff2b806746650cd2
++Subproject commit 30b8542df3db0f2058cfcd3dff2b806746650cd2-dirty

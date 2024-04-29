@@ -1,0 +1,20 @@
+.multiImageInner{
+
+}
+.multiImageInnerRemoveIcon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; 
+    left: 108px; 
+    top: -129px; 
+    background-color: red; 
+    border-width: 0;
+    border-radius: 30px;
+    height: 25px; 
+    width: 25px; 
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    
+}

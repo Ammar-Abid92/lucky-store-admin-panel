@@ -1,0 +1,55 @@
+.slidingPanelMain{
+    z-index: 9;
+  }
+  .sidepanel  {
+      width: 0;
+      position: fixed;
+      top: 0;
+      right: 0;
+      background-color: #fff;
+      overflow-x: hidden;
+      transition: 0.5s;
+      /* padding-top: 60px; */
+      box-shadow: 0 0 5px 0 rgb(0,0,0,0.2); 
+      z-index: 999;
+   }
+    
+    .sidepanel a {
+      padding: 8px 8px 8px 32px;
+      text-decoration: none;
+      font-size: 25px;
+      color: #818181;
+      display: block;
+      transition: 0.3s;
+    }
+    
+    .sidepanel a:hover {
+      color: #f1f1f1;
+    }
+    
+    .sidepanel .closebtn {
+      position: absolute;
+      top: 0;
+      left: 5px;
+      font-size: 36px;
+    }
+    
+    .openbtn {
+      font-size: 20px;
+      cursor: pointer;
+      background-color: #111;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+    }
+    
+    .openbtn:hover {
+      background-color:#444;
+    }
+    .sidepanel .catalogProductsMainInner .categoryBoxProductMain{
+      width: 100%;
+      align-items: flex-start;
+    }
+    .sidepanel .searchBartop.form-group input:focus{
+      border-color: var(--extraLightGray);
+    }
